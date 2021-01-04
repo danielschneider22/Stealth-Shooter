@@ -23,9 +23,14 @@ public class ShowStatsManager : MonoBehaviour
     private GunStatsManager gunStatsManager;
     private bool showingPopup;
 
+    public ButtonManager swapGunsButtonManager;
+    public ButtonManager detailsButtonManager;
+
     private void Awake()
     {
         gunStatsManager = gameObject.transform.parent.gameObject.GetComponent<GunStatsManager>();
+        swapGunsButtonManager.OnButtonClicked += swapGuns;
+        detailsButtonManager.OnButtonClicked += toggleDetails;
     }
 
     private void Start()
@@ -81,5 +86,29 @@ public class ShowStatsManager : MonoBehaviour
             player.GetComponent<PlayerShootController>().SetNewGun(gunStatsManager.gun);
             Destroy(gameObject.transform.parent.gameObject);
         }
+    }
+
+    private void toggleDetails()
+    {
+        if (regView.activeSelf)
+        {
+            regView.SetActive(false);
+            detailView.SetActive(true);
+        }
+        else
+        {
+            regView.SetActive(true);
+            detailView.SetActive(false);
+        }
+    }
+
+    private void swapGuns()
+    {
+        GameObject newGunDrop = Instantiate(gunDropPrefab);
+        Gun currGun = player.GetComponent<PlayerShootController>().currGun;
+        newGunDrop.GetComponent<GunStatsManager>().InitializeGunDrop(currGun);
+        newGunDrop.transform.position = player.transform.position;
+        player.GetComponent<PlayerShootController>().SetNewGun(gunStatsManager.gun);
+        Destroy(gameObject.transform.parent.gameObject);
     }
 }
