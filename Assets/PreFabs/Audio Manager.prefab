@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5288530635820709740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5288530635820709739}
+  - component: {fileID: 5288530635820709738}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5288530635820709739
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5288530635820709740}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.5402155, y: 84.05642, z: -10.96875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5288530635820709738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5288530635820709740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c3aaffab9575ad41b9757e6eecbd360, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - clip: {fileID: 8300000, guid: d03b895ab5cc2464eb7429a831bb428a, type: 3}
+    volume: 0.3
+    pitch: 1
+    name: Notification
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: b8194b8b7eb17a74881ff65b38b4212a, type: 3}
+    volume: 0.3
+    pitch: 1
+    name: MissedNotification
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 90396f3f7c0b1494e9e58572277e66ca, type: 3}
+    volume: 0.3
+    pitch: 1
+    name: GameLoss
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: dc57e6fa66c970a43a1c9f66b604bd8b, type: 3}
+    volume: 0.3
+    pitch: 1
+    name: GainedPoints
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 05ae5090cdeb199438c234a540dcb105, type: 3}
+    volume: 0.3
+    pitch: 1
+    name: ContinueClicked
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: cf404d08da1de784f8947a7427bb4813, type: 3}
+    volume: 0.3
+    pitch: 1
+    name: MakePurchase
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: b640568bbf25a594ebde2c9982d57bb0, type: 3}
+    volume: 0.25
+    pitch: 1
+    name: PickedUpCoin
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 4d595a87090fa5642aa24a4b674d9ece, type: 3}
+    volume: 0.25
+    pitch: 1
+    name: MenuOpened
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: c7fed59534c3a2548875ce8a07fa0c40, type: 3}
+    volume: 0.652
+    pitch: 1
+    name: MissileHit
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 9bce59e41e07f8046be74408431303f6, type: 3}
+    volume: 0.559
+    pitch: 1
+    name: MissileMiss
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 89a3bc6b27630df4585e3a82633079c0, type: 3}
+    volume: 0.681
+    pitch: 1
+    name: Hurt
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 252df4d27744c0440a2c41d59b7bc2fe, type: 3}
+    volume: 1
+    pitch: 1
+    name: WhaleVoice
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 713b093f5b45e884185aa7a96fe1731f, type: 3}
+    volume: 1
+    pitch: 1
+    name: Laughing
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: e6913f1cfabee634797443795fcdb355, type: 3}
+    volume: 1
+    pitch: 1
+    name: Humming
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 86b9db581c8d21e4a8ac2c021cc2a4ae, type: 3}
+    volume: 1
+    pitch: 1
+    name: Impressed
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 60e8062e94c2acf47a8242d051b1c56c, type: 3}
+    volume: 1
+    pitch: 1
+    name: GameWin
+    source: {fileID: 0}
