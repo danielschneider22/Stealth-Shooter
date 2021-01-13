@@ -38,13 +38,10 @@ public class PaceInCircle : MonoBehaviour
             transform.position += transform.right * Time.deltaTime * speed;
         }
         
-        if (Vector3.Distance(initPosition, transform.position) > distance && !isTurning && !isReversing)
+        if (Vector3.Distance(initPosition, transform.position) > distance && !isTurning)
         {
             isTurning = true;
-        }
-        else if (Vector3.Distance(initPosition, transform.position) < speed * 2.5 && !isTurning && isReversing)
-        {
-            isTurning = true;
+            initPosition = transform.position;
         }
         else if (wallColliderManager.willHitWall)
         {

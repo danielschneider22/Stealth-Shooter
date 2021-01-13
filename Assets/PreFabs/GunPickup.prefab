@@ -295,8 +295,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0, g: 0.85568786, b: 1, a: 0.4745098}
-      maxColor: {r: 0, g: 0.5030503, b: 1, a: 0.34117648}
+      minColor: {r: 0.30980393, g: 0, b: 0.34901962, a: 0.4745098}
+      maxColor: {r: 0.71178716, g: 0, b: 0.8018868, a: 0.34117648}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5991,9 +5991,9 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.78
-  m_Color: {r: 0.4339623, g: 0.35282695, b: 0.21084018, a: 1}
+  m_Color: {r: 0.5275188, g: 0.5294118, b: 0, a: 1}
   m_Intensity: 4.47
-  m_LightVolumeOpacity: 0
+  m_LightVolumeOpacity: 0.144
   m_ApplyToSortingLayers: 3fc0709d
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
@@ -6063,9 +6063,9 @@ MonoBehaviour:
   m_LightType: 2
   m_BlendStyleIndex: 1
   m_FalloffIntensity: 0
-  m_Color: {r: 0.28627452, g: 0.20392157, b: 0.06666667, a: 1}
+  m_Color: {r: 0.31097773, g: 0, b: 0.3490566, a: 1}
   m_Intensity: 1.96
-  m_LightVolumeOpacity: 0
+  m_LightVolumeOpacity: 1
   m_ApplyToSortingLayers: 3fc0709d
   m_LightCookieSprite: {fileID: 21300000, guid: 7b9c9cb4cabe7d8489cfddeb3a10764e,
     type: 3}

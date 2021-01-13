@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class CompleteReload : MonoBehaviour
 {
-    private PlayerShootController playerShootController;
+    private PlayerGeneralShootController playerShootController;
     private void Awake()
     {
-        playerShootController = transform.parent.GetComponent<PlayerShootController>();
+        playerShootController = transform.parent.GetComponent<PlayerGeneralShootController>();
     }
     public void CompleteReloadMethod()
     {

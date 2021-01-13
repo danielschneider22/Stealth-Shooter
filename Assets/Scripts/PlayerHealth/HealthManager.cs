@@ -17,7 +17,7 @@ public class HealthManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        healthText.text = "Health: " + health.ToString();
+        healthText.text = health.ToString();
     }
 
     private void FixedUpdate()
@@ -39,12 +39,12 @@ public class HealthManager : MonoBehaviour
             screenShakeController.StartShake(.5f, 1);
 
             health = health + changeAmount;
-            healthText.text = "Health: " + health.ToString();
+            healthText.text = health.ToString();
             playerSprite.color = Color.red;
         } else if (changeAmount > 0)
         {
             health = health + changeAmount;
-            healthText.text = "Health: " + health.ToString();
+            healthText.text = health.ToString();
         }
     }
 

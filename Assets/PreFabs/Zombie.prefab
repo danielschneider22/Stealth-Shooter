@@ -123,6 +123,7 @@ MonoBehaviour:
   animator: {fileID: 788284727698255671}
   hitStunTimer: 0
   distToStayAwayFromPlayer: 5
+  playerVisible: 0
   moveTowardPlayerType: 0
 --- !u!50 &788284727636585335
 Rigidbody2D:
@@ -397,7 +398,7 @@ MonoBehaviour:
   - {x: -0.9643444, y: 0.037475422, z: 0}
   m_ShapePathHash: 2078731410
   m_Mesh: {fileID: 0}
-  m_InstanceId: 27516
+  m_InstanceId: 46330
 --- !u!114 &788284727698255673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,7 +742,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.6968673, y: 0.06657651}
+  m_Offset: {x: 1.3444479, y: 0.06657648}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -752,7 +753,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.59278274, y: 1.3121479}
+  m_Size: {x: 0.20894992, y: 1.3121479}
   m_EdgeRadius: 0
 --- !u!114 &788284728558420511
 MonoBehaviour:

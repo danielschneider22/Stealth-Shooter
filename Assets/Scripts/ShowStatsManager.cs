@@ -43,7 +43,7 @@ public class ShowStatsManager : MonoBehaviour
         {
             gunStatsUI.SetActive(true);
 
-            Gun playerGun = collision.gameObject.GetComponent<PlayerShootController>().currGun;
+            Gun playerGun = collision.gameObject.GetComponent<PlayerGeneralShootController>().currGun;
 
             gunStatsManager.statsContainerSolo.GetComponent<InitializeWithGun>().Initialize(gunStatsManager.gun, playerGun);
             gunStatsManager.statsContainerSolo2.GetComponent<InitializeWithGun>().Initialize(gunStatsManager.gun, playerGun);
@@ -80,10 +80,10 @@ public class ShowStatsManager : MonoBehaviour
         if (showingPopup && Input.GetKeyDown(KeyCode.Space))
         {
             GameObject newGunDrop = Instantiate(gunDropPrefab);
-            Gun currGun = player.GetComponent<PlayerShootController>().currGun;
+            Gun currGun = player.GetComponent<PlayerGeneralShootController>().currGun;
             newGunDrop.GetComponent<GunStatsManager>().InitializeGunDrop(currGun);
             newGunDrop.transform.position = player.transform.position;
-            player.GetComponent<PlayerShootController>().SetNewGun(gunStatsManager.gun);
+            player.GetComponent<PlayerGeneralShootController>().SetNewGun(gunStatsManager.gun);
             Destroy(gameObject.transform.parent.gameObject);
         }
     }
@@ -105,10 +105,10 @@ public class ShowStatsManager : MonoBehaviour
     private void swapGuns()
     {
         GameObject newGunDrop = Instantiate(gunDropPrefab);
-        Gun currGun = player.GetComponent<PlayerShootController>().currGun;
+        Gun currGun = player.GetComponent<PlayerGeneralShootController>().currGun;
         newGunDrop.GetComponent<GunStatsManager>().InitializeGunDrop(currGun);
         newGunDrop.transform.position = player.transform.position;
-        player.GetComponent<PlayerShootController>().SetNewGun(gunStatsManager.gun);
+        player.GetComponent<PlayerGeneralShootController>().SetNewGun(gunStatsManager.gun);
         Destroy(gameObject.transform.parent.gameObject);
     }
 }
