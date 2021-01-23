@@ -8,4 +8,10 @@ public class RoomManager : MonoBehaviour
     public GameObject RightDoor;
     public GameObject BottomDoor;
     public GameObject TopDoor;
+    public RoomManager LeftRoom;
+    public RoomManager RightRoom;
+    public RoomManager TopRoom;
+    public RoomManager BottomRoom;
+    public bool IsEntrance;
+    public bool IsExit;
 }
