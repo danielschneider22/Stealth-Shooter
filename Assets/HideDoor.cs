@@ -8,9 +8,9 @@ public class HideDoor : MonoBehaviour
     public SpriteRenderer top;
     public SpriteRenderer bottom;
     private Color doorColor;
-    public void Start()
+    public void Awake()
     {
-        doorColor = top.color;
+        doorColor = new Color(0.000f, 0.726f, 0.712f, 1.000f);
     }
     public void MakeDoorHidden()
     {

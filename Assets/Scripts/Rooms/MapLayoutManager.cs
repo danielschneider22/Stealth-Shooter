@@ -5,15 +5,23 @@ using UnityEngine;
 public class MapLayoutManager : MonoBehaviour
 {
     public RoomManager initRoomManager;
-    public GameObject mediumRoomPrefab;
+    public List<GameObject> mediumRoomPrefabs;
+    public List<GameObject> largeRoomPrefabs;
+    public List<GameObject> treasureRoomPrefabs;
+    public List<GameObject> merchantRoomPrefabs;
+    public GameObject exitRoom;
     public int numRoomsToGenerate;
 
     private GameObject newRoom;
     private List<RoomManager> pathFromEntranceToExit;
     private List<RoomManager> pathFromEntranceToExitSiblings;
+    private List<RoomManager> allRooms;
     private void Start()
     {
+        allRooms = new List<RoomManager>() { initRoomManager };
         CreatePathFromStartToExit();
+        CreateSubBranches();
+        CreateTreasureRooms();
     }
 
     private void CreatePathFromStartToExit()
@@ -24,6 +32,8 @@ public class MapLayoutManager : MonoBehaviour
         for (var i = 0; i < numRoomsToGenerate; i++)
         {
             bool foundGoodDirection = false;
+            newRoom = i == numRoomsToGenerate - 1 ? Instantiate(exitRoom) : Instantiate(GetRandomRoom());
+            RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
             while (!foundGoodDirection)
             {
                 int direction = Random.Range(0, 5);
@@ -31,32 +41,207 @@ public class MapLayoutManager : MonoBehaviour
                 {
                     direction = Random.Range(0, 5);
                 }
-                newRoom = Instantiate(mediumRoomPrefab);
-                RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
+                
                 PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
                 if (!DoesNewRoomOverlapWithAnyExisting(newRoomManager))
                 {
                     pathFromEntranceToExit.Add(newRoomManager);
+                    allRooms.Add(newRoomManager);
+                    UnhideDoor(direction, currRoom);
                     currRoom = newRoomManager;
                     foundGoodDirection = true;
                     badDirections = new List<int>();
                     badDirections.Add(GetOppositeDirection(direction));
-                    if (i == numRoomsToGenerate - 1)
-                    {
-                        newRoomManager.IsExit = true;
-                    }
                 }
                 else
                 {
-                    Destroy(newRoomManager);
-                    Destroy(newRoom);
                     badDirections.Add(direction);
                 }
                 if (badDirections.Count == 4)
                 {
+                    Destroy(newRoomManager);
+                    Destroy(newRoom);
                     badDirections = new List<int>();
                     foundGoodDirection = true;
                     currRoom = initRoomManager;
+                }
+            }
+        }
+    }
+
+    private GameObject GetRandomMediumRoom()
+    {
+        int randomRoom = Random.Range(0, mediumRoomPrefabs.Count);
+        return mediumRoomPrefabs[randomRoom];
+    }
+
+    private GameObject GetRandomTreasureRoom()
+    {
+        int randomRoom = Random.Range(0, treasureRoomPrefabs.Count);
+        return treasureRoomPrefabs[randomRoom];
+    }
+
+    private GameObject GetRandomLargeRoom()
+    {
+        int randomRoom = Random.Range(0, largeRoomPrefabs.Count);
+        return largeRoomPrefabs[randomRoom];
+    }
+
+    private GameObject GetRandomMerchantRoom()
+    {
+        int randomRoom = Random.Range(0, merchantRoomPrefabs.Count);
+        return merchantRoomPrefabs[randomRoom];
+    }
+
+    private GameObject GetRandomRoom()
+    {
+        int roomType = Random.Range(0, 4);
+        switch(roomType)
+        {
+            case (0):
+            case (1):
+                return GetRandomMediumRoom();
+            case (2):
+                return GetRandomLargeRoom();
+        }
+        return GetRandomMediumRoom();
+    }
+
+    private void CreateSubBranches()
+    {
+        List<int> badDirections = new List<int>();
+        pathFromEntranceToExitSiblings = new List<RoomManager>();
+        List<RoomManager> subList = pathFromEntranceToExit.GetRange(1, pathFromEntranceToExit.Count - 2);
+        foreach (RoomManager currRoom in subList)
+        {
+            bool foundGoodDirection = false;
+            newRoom = Instantiate(GetRandomRoom());
+            RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
+            while (!foundGoodDirection)
+            {
+                int direction = Random.Range(0, 5);
+                while (badDirections.Contains(direction))
+                {
+                    direction = Random.Range(0, 5);
+                }
+                
+                PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
+                if (!DoesNewRoomOverlapWithAnyExisting(newRoomManager))
+                {
+                    allRooms.Add(newRoomManager);
+                    foundGoodDirection = true;
+                    badDirections = new List<int>();
+                    pathFromEntranceToExitSiblings.Add(newRoomManager);
+                    badDirections.Add(GetOppositeDirection(direction));
+                    UnhideDoor(direction, currRoom);
+                }
+                else
+                {
+                    newRoomManager.InitializeDoors();
+                    badDirections.Add(direction);
+                }
+                if (badDirections.Count == 4)
+                {
+                    Destroy(newRoomManager);
+                    Destroy(newRoom);
+                    badDirections = new List<int>();
+                    foundGoodDirection = true;
+                }
+            }
+        }
+    }
+
+    private void CreateTreasureRooms()
+    {
+        int numTreasureRoomsCreated = 0;
+        List<int> badDirections = new List<int>();
+        List<RoomManager> subList = pathFromEntranceToExitSiblings.GetRange(0, pathFromEntranceToExitSiblings.Count - 1);
+        List<int> roomsLinkedToTreasure = new List<int>();
+        for (var i = 0; i <= 1; i=i+1)
+        {
+            bool foundGoodDirection = false;
+            newRoom = Instantiate(GetRandomTreasureRoom());
+            RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
+            while (!foundGoodDirection && roomsLinkedToTreasure.Count < subList.Count)
+            {
+                int roomId = Random.Range(0, subList.Count);
+                while (roomsLinkedToTreasure.Contains(roomId))
+                {
+                    roomId = Random.Range(0, subList.Count);
+                }
+                RoomManager currRoom = subList[roomId];
+                int direction = Random.Range(0, 5);
+                while (badDirections.Contains(direction))
+                {
+                    direction = Random.Range(0, 5);
+                }
+                
+                PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
+                if (!DoesNewRoomOverlapWithAnyExisting(newRoomManager))
+                {
+                    allRooms.Add(newRoomManager);
+                    foundGoodDirection = true;
+                    badDirections = new List<int>();
+                    UnhideDoor(direction, currRoom);
+                    roomsLinkedToTreasure.Add(roomId);
+                    numTreasureRoomsCreated++;
+                }
+                else
+                {
+                    newRoomManager.InitializeDoors();
+                    badDirections.Add(direction);
+                }
+                if (badDirections.Count == 4)
+                {
+                    Destroy(newRoomManager);
+                    Destroy(newRoom);
+                    badDirections = new List<int>();
+                    foundGoodDirection = true;
+                }
+            }
+        }
+
+        if (numTreasureRoomsCreated < 2)
+        {
+            for (var i = allRooms.Count - 2; i > 0; i--)
+            {
+                RoomManager currRoom = allRooms[i];
+                bool foundGoodDirection = false;
+                newRoom = Instantiate(GetRandomTreasureRoom());
+                RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
+                while (!foundGoodDirection)
+                {
+                    int direction = Random.Range(0, 5);
+                    while (badDirections.Contains(direction))
+                    {
+                        direction = Random.Range(0, 5);
+                    }
+                    
+                    PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
+                    if (!DoesNewRoomOverlapWithAnyExisting(newRoomManager))
+                    {
+                        allRooms.Add(newRoomManager);
+                        foundGoodDirection = true;
+                        badDirections = new List<int>();
+                        UnhideDoor(direction, currRoom);
+                        numTreasureRoomsCreated++;
+                        if(numTreasureRoomsCreated == 2)
+                        {
+                            i = 0;
+                        }
+                    }
+                    else
+                    {
+                        newRoomManager.InitializeDoors();
+                        badDirections.Add(direction);
+                    }
+                    if (badDirections.Count == 4)
+                    {
+                        Destroy(newRoomManager);
+                        Destroy(newRoom);
+                        badDirections = new List<int>();
+                        foundGoodDirection = true;
+                    }
                 }
             }
         }
@@ -126,9 +311,32 @@ public class MapLayoutManager : MonoBehaviour
         return 0;
     }
 
+    public void UnhideDoor(int direction, RoomManager currRoom)
+    {
+        switch (direction)
+        {
+            // Left
+            case (0):
+                currRoom.LeftDoor.GetComponent<HideDoor>().UnhideDoor();
+                break;
+            // Right
+            case (1):
+                currRoom.RightDoor.GetComponent<HideDoor>().UnhideDoor();
+                break;
+            // Bottom
+            case (2):
+                currRoom.BottomDoor.GetComponent<HideDoor>().UnhideDoor();
+                break;
+            // Top
+            case (3):
+                currRoom.TopDoor.GetComponent<HideDoor>().UnhideDoor();
+                break;
+        }
+    }
+
     public bool DoesNewRoomOverlapWithAnyExisting(RoomManager newRoomManager)
     {
-        foreach(RoomManager roomManager in pathFromEntranceToExit)
+        foreach(RoomManager roomManager in allRooms)
         {
             if(RoomsOverlap(roomManager, newRoomManager))
             {

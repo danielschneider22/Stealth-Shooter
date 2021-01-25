@@ -11,12 +11,13 @@ public class GunStatsManager : MonoBehaviour
     public GameObject statsContainerSolo;
     public GameObject statsContainerPlayerGun;
     public GameObject statsContainerSolo2;
+    public Rarity gunRarity;
     private InitializeGunPickupColors initializeGunPickupColors;
 
     void Awake()
     {
         initializeGunPickupColors = GetComponent<InitializeGunPickupColors>();
-        Rarity rarity = Rarity.Uncommon;
+        Rarity rarity = gunRarity;
         gun = new Gun(1f, Color.white, 20, 100, GunNameGenerator.GeneratePistolName(rarity), GunType.Pistol, 60f, 1f, .1f, 2, 8, rarity, new List<string>());
         InitializeGunDrop(gun);
     }

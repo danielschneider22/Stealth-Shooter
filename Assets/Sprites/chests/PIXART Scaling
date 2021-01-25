@@ -1,0 +1,18 @@
+Pixart Scaling Algorithm in GIMP
+
+duplicate layer
+desaturate layer color
+set layer mode to light ~50%
+filter edge ... differential 5,0
+invert layer color
+gaussian blur ~2 on layer
+merge visible layers
+finaly scale down and reduce colors
+
+Values may vary depending on the amount of necessary downscaling and how sharp/pixelated the result should be.
+The idea is that edges are broadened such that their width will cover about one pixel in the low-res version to prevent aliasing effects.
+Steps could be repeated for creating several mipmap resolutions.
+Would be awesome if somebody would write a plugin for GIMP.
+
+Benjamin Pickhardt (hackcraft.de)
+

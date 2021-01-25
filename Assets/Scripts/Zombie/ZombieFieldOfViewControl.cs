@@ -18,6 +18,7 @@ public class ZombieFieldOfViewControl : MonoBehaviour
         fieldOfView.OnRaycastHit += ZombieRaycastHit;
         fieldOfView.OnPlayerNotFound += PlayerNotFound;
         moveTowardsPlayer = GetComponent<MoveTowardsPlayer>();
+        fieldOfView.viewDistance = 20f;
     }
 
     void Update()
