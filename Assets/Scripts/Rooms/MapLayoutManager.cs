@@ -157,48 +157,52 @@ public class MapLayoutManager : MonoBehaviour
         List<int> badDirections = new List<int>();
         List<RoomManager> subList = pathFromEntranceToExitSiblings.GetRange(0, pathFromEntranceToExitSiblings.Count - 1);
         List<int> roomsLinkedToTreasure = new List<int>();
-        for (var i = 0; i <= 1; i=i+1)
+        for (var i = 0; i <= 4; i=i+1)
         {
-            bool foundGoodDirection = false;
-            newRoom = Instantiate(GetRandomTreasureRoom());
-            RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
-            while (!foundGoodDirection && roomsLinkedToTreasure.Count < subList.Count)
+            if(roomsLinkedToTreasure.Count < subList.Count)
             {
-                int roomId = Random.Range(0, subList.Count);
-                while (roomsLinkedToTreasure.Contains(roomId))
+                bool foundGoodDirection = false;
+                newRoom = Instantiate(GetRandomTreasureRoom());
+                RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
+                while (!foundGoodDirection)
                 {
-                    roomId = Random.Range(0, subList.Count);
-                }
-                RoomManager currRoom = subList[roomId];
-                int direction = Random.Range(0, 5);
-                while (badDirections.Contains(direction))
-                {
-                    direction = Random.Range(0, 5);
-                }
-                
-                PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
-                if (!DoesNewRoomOverlapWithAnyExisting(newRoomManager))
-                {
-                    allRooms.Add(newRoomManager);
-                    foundGoodDirection = true;
-                    badDirections = new List<int>();
-                    UnhideDoor(direction, currRoom);
-                    roomsLinkedToTreasure.Add(roomId);
-                    numTreasureRoomsCreated++;
-                }
-                else
-                {
-                    newRoomManager.InitializeDoors();
-                    badDirections.Add(direction);
-                }
-                if (badDirections.Count == 4)
-                {
-                    Destroy(newRoomManager);
-                    Destroy(newRoom);
-                    badDirections = new List<int>();
-                    foundGoodDirection = true;
+                    int roomId = Random.Range(0, subList.Count);
+                    while (roomsLinkedToTreasure.Contains(roomId))
+                    {
+                        roomId = Random.Range(0, subList.Count);
+                    }
+                    RoomManager currRoom = subList[roomId];
+                    int direction = Random.Range(0, 5);
+                    while (badDirections.Contains(direction))
+                    {
+                        direction = Random.Range(0, 5);
+                    }
+
+                    PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
+                    if (!DoesNewRoomOverlapWithAnyExisting(newRoomManager))
+                    {
+                        allRooms.Add(newRoomManager);
+                        foundGoodDirection = true;
+                        badDirections = new List<int>();
+                        UnhideDoor(direction, currRoom);
+                        roomsLinkedToTreasure.Add(roomId);
+                        numTreasureRoomsCreated++;
+                    }
+                    else
+                    {
+                        newRoomManager.InitializeDoors();
+                        badDirections.Add(direction);
+                    }
+                    if (badDirections.Count == 4)
+                    {
+                        Destroy(newRoomManager);
+                        Destroy(newRoom);
+                        badDirections = new List<int>();
+                        foundGoodDirection = true;
+                    }
                 }
             }
+            
         }
 
         if (numTreasureRoomsCreated < 2)
