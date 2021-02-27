@@ -14,10 +14,33 @@ public class RoomManager : MonoBehaviour
     public RoomManager BottomRoom;
     public bool IsEntrance;
     public bool IsExit;
+    public GameObject enemies;
+    public GameObject lights;
+    public GameObject background;
+
+    SpriteRenderer m_Renderer;
+    // Use this for initialization
+    void Start()
+    {
+        m_Renderer = background.GetComponent<SpriteRenderer>();
+    }
 
     private void Awake()
     {
         InitializeDoors();
+    }
+    void Update()
+    {
+        if (m_Renderer.isVisible)
+        {
+            enemies.SetActive(true);
+            lights.SetActive(true);
+        }
+        else if (!m_Renderer.isVisible)
+        {
+            enemies.SetActive(false);
+            lights.SetActive(false);
+        }
     }
 
     public void InitializeDoors()

@@ -16,6 +16,8 @@ public class PlayerMovementJoystick : MonoBehaviour
     {
         horizontalMove = joystickMovement.Horizontal * runSpeed;
         verticalMove = joystickMovement.Vertical * runSpeed;
+        Debug.Log(horizontalMove);
+        Debug.Log(verticalMove);
     }
 
     private void FixedUpdate()

@@ -44,16 +44,16 @@ public class InitializeWithGun : MonoBehaviour
         switch (gun.rarity)
         {
             case Rarity.Common:
-                bgWithColor.color = new Color(InitializeGunPickupColors.commonDarkerColor.r + .1f, InitializeGunPickupColors.commonDarkerColor.g + .1f, InitializeGunPickupColors.commonDarkerColor.b + .1f);
-                bgName.color = new Color(InitializeGunPickupColors.commonDarkerColor.r - .1f, InitializeGunPickupColors.commonDarkerColor.g - .1f, InitializeGunPickupColors.commonDarkerColor.b - .1f);
-                bgStats.color = new Color(InitializeGunPickupColors.commonPrimaryColor.r - .05f, InitializeGunPickupColors.commonPrimaryColor.g - .05f, InitializeGunPickupColors.commonPrimaryColor.b - .05f);
+                bgWithColor.color = new Color(InitializeGunPickupColors.commonDarkerColor.r + .1f, InitializeGunPickupColors.commonDarkerColor.g + .1f, InitializeGunPickupColors.commonDarkerColor.b + .1f, .4f);
+                bgName.color = new Color(InitializeGunPickupColors.commonDarkerColor.r - .1f, InitializeGunPickupColors.commonDarkerColor.g - .1f, InitializeGunPickupColors.commonDarkerColor.b - .1f, .4f);
+                bgStats.color = new Color(InitializeGunPickupColors.commonPrimaryColor.r - .05f, InitializeGunPickupColors.commonPrimaryColor.g - .05f, InitializeGunPickupColors.commonPrimaryColor.b - .05f, .4f);
                 innerCircle.color = InitializeGunPickupColors.commonDarkerColor;
                 outerCircle.color = InitializeGunPickupColors.commonPrimaryColor;
                 break;
             case Rarity.Uncommon:
-                bgWithColor.color = new Color(0, 0.1719078f, 0.3867925f);
-                bgName.color = new Color(0, 0.1283437f, 0.1981132f);
-                bgStats.color = new Color(0, 0.2991122f, 0.4622642f);
+                bgWithColor.color = new Color(0, 0.1719078f, 0.3867925f, .4f);
+                bgName.color = new Color(0, 0.1283437f, 0.1981132f, .4f);
+                bgStats.color = new Color(0, 0.2991122f, 0.4622642f, .4f);
                 innerCircle.color = InitializeGunPickupColors.uncommonDarkerColor;
                 outerCircle.color = InitializeGunPickupColors.uncommonPrimaryColor;
                 break;

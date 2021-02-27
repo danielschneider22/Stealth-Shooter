@@ -76,8 +76,12 @@ public class PlayerController : MonoBehaviour
 			transform.rotation = q;
 		}*/
 		float angle = Mathf.Atan2(joystick.Direction.y, joystick.Direction.x) * Mathf.Rad2Deg;
-		Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
-		transform.rotation = q;
+		if(angle != 0)
+        {
+			Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+			transform.rotation = q;
+		}
+		
 		// transform.rotation = Quaternion.LookRotation(new Vector3(joystick.Horizontal, joystick.Vertical, 0));
 
 	}
