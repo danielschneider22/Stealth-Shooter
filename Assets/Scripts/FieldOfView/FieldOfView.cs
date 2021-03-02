@@ -58,7 +58,10 @@ public class FieldOfView : MonoBehaviour
             else
             {
                 vertex = raycastHit2D.point;
-                OnRaycastHit(raycastHit2D);
+                if(OnRaycastHit != null)
+                {
+                    OnRaycastHit(raycastHit2D);
+                }
                 if(raycastHit2D.collider.gameObject.name.Contains("Player"))
                 {
                     playerFound = true;
@@ -81,7 +84,7 @@ public class FieldOfView : MonoBehaviour
             angle -= angleIncrease;
         }
 
-        if (!playerFound)
+        if (!playerFound && OnPlayerNotFound != null)
         {
             OnPlayerNotFound();
         }

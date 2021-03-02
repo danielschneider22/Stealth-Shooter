@@ -14,6 +14,7 @@ public class PlayerGeneralShootController : MonoBehaviour
     public GameObject handgunBullet;
     public Gun currGun;
     public TextMeshProUGUI ammoText;
+    public CooldownBar cooldownBar;
 
     private int numBulletsInGun;
 
@@ -43,6 +44,7 @@ public class PlayerGeneralShootController : MonoBehaviour
             muzzleFlashTimer += Time.deltaTime;
         }
         coolDownTimer += Time.deltaTime;
+        cooldownBar.SetFill(coolDownTimer, currGun.cooldownTime);
     }
 
     private void CreateSmoke()

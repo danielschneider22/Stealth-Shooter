@@ -11,6 +11,7 @@ public class InitializeWithGun : MonoBehaviour
     public TextMeshProUGUI damageHigh;
     public TextMeshProUGUI clipSize;
     public TextMeshProUGUI reloadTime;
+    public TextMeshProUGUI cooldownTime;
     public TextMeshProUGUI specialStats;
 
     public Image bgWithColor;
@@ -26,13 +27,15 @@ public class InitializeWithGun : MonoBehaviour
         damageHigh.text = gun.damageHigh.ToString();
         clipSize.text = gun.clipSize.ToString();
         reloadTime.text = gun.reloadTime.ToString() + " sec";
+        cooldownTime.text = gun.cooldownTime.ToString();
 
         if (playerGun != null)
         {
             damageLow.color = playerGun.damageLow > gun.damageLow ? Color.red : playerGun.damageLow < gun.damageLow ? Color.green : Color.yellow;
             damageHigh.color = playerGun.damageHigh > gun.damageHigh ? Color.red : playerGun.damageHigh < gun.damageHigh ? Color.green : Color.yellow;
             clipSize.color = playerGun.clipSize > gun.clipSize ? Color.red : playerGun.clipSize < gun.clipSize ? Color.green : Color.yellow;
-            reloadTime.color = playerGun.reloadTime > gun.reloadTime ? Color.red : playerGun.clipSize < gun.reloadTime ? Color.green : Color.yellow;
+            reloadTime.color = playerGun.reloadTime < gun.reloadTime ? Color.red : playerGun.reloadTime > gun.reloadTime ? Color.green : Color.yellow;
+            cooldownTime.color = playerGun.cooldownTime < gun.cooldownTime ? Color.red : playerGun.cooldownTime > gun.cooldownTime ? Color.green : Color.yellow;
         }
 
         specialStats.text = "";

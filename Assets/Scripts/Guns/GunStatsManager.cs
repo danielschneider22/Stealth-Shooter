@@ -18,7 +18,7 @@ public class GunStatsManager : MonoBehaviour
     {
         initializeGunPickupColors = GetComponent<InitializeGunPickupColors>();
         Rarity rarity = gunRarity;
-        gun = new Gun(1f, Color.white, 20, 100, GunNameGenerator.GeneratePistolName(rarity), GunType.Pistol, 60f, 1f, .1f, 2, 8, rarity, new List<string>());
+        gun = new Gun(1f, Color.white, 20, 100, GunNameGenerator.GeneratePistolName(rarity), GunType.Pistol, 60f, 1f, 1.5f, 2, 8, rarity, new List<string>());
         InitializeGunDrop(gun);
     }
 

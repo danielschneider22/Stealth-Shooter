@@ -17,7 +17,7 @@ public class PlayerShootController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Fire1") && !playerGeneralShootController.IsReloading())
+        if(Input.GetButtonDown("Fire1") && !playerGeneralShootController.IsReloading() && playerGeneralShootController.coolDownTimer > playerGeneralShootController.currGun.cooldownTime)
         {
             playerGeneralShootController.ShootHandgun();
         }
