@@ -17,12 +17,12 @@ public class PlayerGeneralShootController : MonoBehaviour
     public CooldownBar cooldownBar;
 
     private int numBulletsInGun;
-
+    private bool isReloading;
     private float muzzleFlashTimer;
     private float muzzleFlashTime = .05f;
     public Dictionary<GunType, int> ammoPerGunType = new Dictionary<GunType, int>();
 
-    public float coolDownTimer;
+    public float coolDownTimer = 100f;
 
     private void Awake()
     {
@@ -66,7 +66,7 @@ public class PlayerGeneralShootController : MonoBehaviour
         rb.AddForce(transform.right * currGun.bulletSpeed, ForceMode2D.Impulse);
         numBulletsInGun--;
         CorrectAmmoText();
-        if (numBulletsInGun == 0)
+        if (numBulletsInGun <= 0)
         {
             Reload();
         }
@@ -75,12 +75,15 @@ public class PlayerGeneralShootController : MonoBehaviour
 
     public void Reload()
     {
+        bodyAnimator.speed = 1 / currGun.reloadTime;
         bodyAnimator.SetTrigger("Reload");
+        isReloading = true;
     }
 
     public bool IsReloading()
     {
-        return bodyAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Reload");
+        // return bodyAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Reload");
+        return isReloading;
     }
 
     public void CorrectAmmoText()
@@ -99,6 +102,8 @@ public class PlayerGeneralShootController : MonoBehaviour
 
     public void CompleteReload()
     {
+        isReloading = false;
+        bodyAnimator.speed = 1;
         ammoPerGunType[currGun.gunType] -= currGun.clipSize - numBulletsInGun;
         numBulletsInGun = currGun.clipSize;
         CorrectAmmoText();
