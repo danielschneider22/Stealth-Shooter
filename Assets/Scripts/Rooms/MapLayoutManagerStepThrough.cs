@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapLayoutManager : MonoBehaviour
+public class MapLayoutManagerStepThrough : MonoBehaviour
 {
     public RoomManager initRoomManager;
     public List<GameObject> mediumRoomPrefabs;
@@ -13,33 +13,63 @@ public class MapLayoutManager : MonoBehaviour
     public int numRoomsToGenerate;
 
     private GameObject newRoom;
+    private RoomManager newRoomManager;
     private List<RoomManager> pathFromEntranceToExit;
     private List<RoomManager> pathFromEntranceToExitSiblings;
     private List<RoomManager> allRooms;
+    
+    private int currStep = 1;
+    private int i1 = 0;
+    private int i2 = 0;
+
+    private int debugCt = 0;
+
+    private RoomManager currRoom;
+    private List<int> badDirections = new List<int>();
+
     private void Start()
     {
+        currRoom = initRoomManager;
+        pathFromEntranceToExit = new List<RoomManager>() { initRoomManager };
         allRooms = new List<RoomManager>() { initRoomManager };
-        CreatePathFromStartToExit();
-        CreateSubBranches();
-        CreateTreasureRooms();
+        pathFromEntranceToExitSiblings = new List<RoomManager>();
+    }
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            if (currStep == 1)
+            {
+                CreatePathFromStartToExit();
+            }
+            else if (currStep == 2)
+            {
+                CreateSubBranches();
+            }
+            else if (currStep == 3)
+            {
+                CreateTreasureRooms();
+            }
+        }
+        
     }
 
     private void CreatePathFromStartToExit()
     {
-        pathFromEntranceToExit = new List<RoomManager>() { initRoomManager };
-        RoomManager currRoom = initRoomManager;
-        List<int> badDirections = new List<int>();
-        for (var i = 0; i < numRoomsToGenerate; i++)
+        for (var i = i1; i < numRoomsToGenerate; i++)
         {
             bool foundGoodDirection = false;
-            newRoom = i == numRoomsToGenerate - 1 ? Instantiate(exitRoom) : Instantiate(GetRandomRoom());
-            RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
+            if(newRoom == null)
+            {
+                newRoom = i == numRoomsToGenerate - 1 ? Instantiate(exitRoom) : Instantiate(GetRandomRoom());
+                newRoomManager = newRoom.GetComponent<RoomManager>();
+            }
             while (!foundGoodDirection)
             {
-                int direction = Random.Range(0, 5);
-                while (badDirections.Contains(direction))
+                int direction = Random.Range(0, 4);
+                while (badDirections.Contains(direction) && badDirections.Count != 4)
                 {
-                    direction = Random.Range(0, 5);
+                    direction = Random.Range(0, 4);
                 }
                 PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
                 if (!DoesNewRoomOverlapWithAnyExisting(newRoomManager))
@@ -51,22 +81,37 @@ public class MapLayoutManager : MonoBehaviour
                     foundGoodDirection = true;
                     badDirections = new List<int>();
                     badDirections.Add(GetOppositeDirection(direction));
+                    i1++;
+                    newRoom = null;
+                    debugCt++;
+                    Debug.Log("here a " + debugCt.ToString());
+                    return;
                 }
-                else
+                else if(badDirections.Count != 4)
                 {
+                    debugCt++;
+                    Debug.Log("here b " + debugCt.ToString());
                     newRoomManager.InitializeDoors();
                     badDirections.Add(direction);
+                    return;
                 }
                 if (badDirections.Count == 4)
                 {
+                    debugCt++;
+                    Debug.Log("here c " + debugCt.ToString());
                     Destroy(newRoomManager);
                     Destroy(newRoom);
                     badDirections = new List<int>();
                     foundGoodDirection = true;
                     currRoom = initRoomManager;
+                    newRoom = null;
+                    i1++;
+                    return;
                 }
             }
         }
+        currRoom = null;
+        currStep++;
     }
 
     private GameObject GetRandomMediumRoom()
@@ -109,18 +154,21 @@ public class MapLayoutManager : MonoBehaviour
 
     private void CreateSubBranches()
     {
-        List<int> badDirections = new List<int>();
-        pathFromEntranceToExitSiblings = new List<RoomManager>();
         List<RoomManager> subList = pathFromEntranceToExit.GetRange(1, pathFromEntranceToExit.Count - 2);
-        foreach (RoomManager currRoom in subList)
+        for (var i = i2; i < subList.Count; i++)
         {
+            if(currRoom == null)
+            {
+                currRoom = subList[i];
+                newRoom = Instantiate(GetRandomRoom());
+                newRoomManager = newRoom.GetComponent<RoomManager>();
+            }
             bool foundGoodDirection = false;
-            newRoom = Instantiate(GetRandomRoom());
-            RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
+
             while (!foundGoodDirection)
             {
                 int direction = Random.Range(0, 4);
-                while (badDirections.Contains(direction))
+                while (badDirections.Contains(direction) && badDirections.Count != 4)
                 {
                     direction = Random.Range(0, 4);
                 }
@@ -134,11 +182,16 @@ public class MapLayoutManager : MonoBehaviour
                     pathFromEntranceToExitSiblings.Add(newRoomManager);
                     badDirections.Add(GetOppositeDirection(direction));
                     UnhideDoor(direction, currRoom);
+                    newRoom = null;
+                    currRoom = null;
+                    i2++;
+                    return;
                 }
-                else
+                else if(badDirections.Count != 4)
                 {
                     newRoomManager.InitializeDoors();
                     badDirections.Add(direction);
+                    return;
                 }
                 if (badDirections.Count == 4)
                 {
@@ -146,9 +199,15 @@ public class MapLayoutManager : MonoBehaviour
                     Destroy(newRoom);
                     badDirections = new List<int>();
                     foundGoodDirection = true;
+                    newRoom = null;
+                    currRoom = null;
+                    i2++;
+                    return;
                 }
             }
         }
+        currRoom = null;
+        currStep++;
     }
 
     private void CreateTreasureRooms()
@@ -172,10 +231,10 @@ public class MapLayoutManager : MonoBehaviour
                         roomId = Random.Range(0, subList.Count);
                     }
                     RoomManager currRoom = subList[roomId];
-                    int direction = Random.Range(0, 4);
+                    int direction = Random.Range(0, 5);
                     while (badDirections.Contains(direction))
                     {
-                        direction = Random.Range(0, 4);
+                        direction = Random.Range(0, 5);
                     }
 
                     PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
@@ -215,10 +274,10 @@ public class MapLayoutManager : MonoBehaviour
                 RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
                 while (!foundGoodDirection)
                 {
-                    int direction = Random.Range(0, 4);
+                    int direction = Random.Range(0, 5);
                     while (badDirections.Contains(direction))
                     {
-                        direction = Random.Range(0, 4);
+                        direction = Random.Range(0, 5);
                     }
                     
                     PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
@@ -254,6 +313,8 @@ public class MapLayoutManager : MonoBehaviour
     private void PositionRoomInCorrectDirection(int direction, RoomManager newRoomManager, RoomManager currRoom)
     {
         float diffX, diffY = 0;
+        debugCt++;
+        Debug.Log("dir" + " " + direction.ToString() + " " + debugCt.ToString());
         switch (direction)
         {
             // Left
@@ -263,6 +324,8 @@ public class MapLayoutManager : MonoBehaviour
                 newRoom.transform.position = new Vector3(newRoom.transform.position.x - diffX, newRoom.transform.position.y - diffY, 0);
                 newRoomManager.RightDoor.SetActive(false);
                 newRoomManager.RightRoom = currRoom;
+                debugCt++;
+                Debug.Log("Left" + " " + debugCt.ToString());
                 break;
             // Right
             case (1):
@@ -271,6 +334,8 @@ public class MapLayoutManager : MonoBehaviour
                 newRoom.transform.position = new Vector3(newRoom.transform.position.x - diffX, newRoom.transform.position.y - diffY, 0);
                 newRoomManager.LeftDoor.SetActive(false);
                 newRoomManager.LeftRoom = currRoom;
+                debugCt++;
+                Debug.Log("Right" + " " + debugCt.ToString());
                 break;
             // Bottom
             case (2):
@@ -279,6 +344,8 @@ public class MapLayoutManager : MonoBehaviour
                 newRoom.transform.position = new Vector3(newRoom.transform.position.x - diffX, newRoom.transform.position.y - diffY, 0);
                 newRoomManager.TopDoor.SetActive(false);
                 newRoomManager.TopRoom = currRoom;
+                debugCt++;
+                Debug.Log("Bottom" + " " + debugCt.ToString());
                 break;
             // Top
             case (3):
@@ -287,6 +354,8 @@ public class MapLayoutManager : MonoBehaviour
                 newRoom.transform.position = new Vector3(newRoom.transform.position.x - diffX, newRoom.transform.position.y - diffY, 0);
                 newRoomManager.BottomDoor.SetActive(false);
                 newRoomManager.BottomRoom = currRoom;
+                debugCt++;
+                Debug.Log("Top" + " " + debugCt.ToString());
                 break;
         }
     }
