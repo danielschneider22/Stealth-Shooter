@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PlayClick : MonoBehaviour
 {
-	public Text text;
+	public TextMeshProUGUI text;
 
 	public void Play() { // exit main menu into game scene
 		Debug.Log("Debug: Play"); 
