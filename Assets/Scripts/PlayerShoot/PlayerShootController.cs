@@ -6,7 +6,7 @@ using static Gun;
 
 public class PlayerShootController : MonoBehaviour
 {
-
+		public bool	canShootOverride;
     private PlayerGeneralShootController playerGeneralShootController;
 
     private void Awake()
@@ -17,7 +17,11 @@ public class PlayerShootController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButton("Fire1") && !playerGeneralShootController.IsReloading() && playerGeneralShootController.coolDownTimer > playerGeneralShootController.currGun.cooldownTime)
+			Debug.Log("PlayerShoot Update");
+        if (Input.GetButton("Fire1") 
+					&& ((!playerGeneralShootController.IsReloading() && playerGeneralShootController.coolDownTimer > playerGeneralShootController.currGun.cooldownTime) 
+					|| (canShootOverride))
+				)
         {
             playerGeneralShootController.ShootHandgun();
         }

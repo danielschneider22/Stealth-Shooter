@@ -35,6 +35,7 @@ public class PlayerGeneralShootController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+			// Debug.Log("Update");
         if (muzzleFlashTimer > muzzleFlashTime && muzzleFlash.activeSelf)
         {
             muzzleFlash.SetActive(false);
@@ -44,7 +45,7 @@ public class PlayerGeneralShootController : MonoBehaviour
             muzzleFlashTimer += Time.deltaTime;
         }
         coolDownTimer += Time.deltaTime;
-        cooldownBar.SetFill(coolDownTimer, currGun.cooldownTime);
+        // cooldownBar.SetFill(coolDownTimer, currGun.cooldownTime);
     }
 
     private void CreateSmoke()
@@ -56,6 +57,7 @@ public class PlayerGeneralShootController : MonoBehaviour
 
     public void ShootHandgun()
     {
+			// Debug.Log("pew");
         CreateSmoke();
         muzzleFlash.SetActive(true);
         muzzleFlashTimer = 0f;
@@ -88,7 +90,7 @@ public class PlayerGeneralShootController : MonoBehaviour
 
     public void CorrectAmmoText()
     {
-        ammoText.text = numBulletsInGun.ToString() + " / " + ammoPerGunType[currGun.gunType].ToString();
+        // ammoText.text = numBulletsInGun.ToString() + " / " + ammoPerGunType[currGun.gunType].ToString();
     }
 
     public void SetNewGun(Gun newGun)
