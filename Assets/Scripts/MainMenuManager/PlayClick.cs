@@ -13,7 +13,7 @@ public class PlayClick : MonoBehaviour
 	public void Play() { // exit main menu into game scene
 		Color orangeFromMuzzle = new Color32(253,175,71,255);
 		text.color = orangeFromMuzzle;
-		// SceneManager.LoadSceneAsync("Scene 1");
+		SceneManager.LoadSceneAsync("Scene 1");
 		// muzzleFlash.enabled = true;
 	}
     // Start is called before the first frame update
