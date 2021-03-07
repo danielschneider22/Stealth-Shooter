@@ -20,7 +20,7 @@ public class PlayerGeneralShootController : MonoBehaviour
     private bool isReloading;
     private float muzzleFlashTimer;
     private float muzzleFlashTime = .05f;
-		private AudioManager audioManager;
+	private AudioManager audioManager;
     public Dictionary<GunType, int> ammoPerGunType = new Dictionary<GunType, int>();
 
     public float coolDownTimer = 100f;
@@ -31,7 +31,11 @@ public class PlayerGeneralShootController : MonoBehaviour
         ammoPerGunType[GunType.Pistol] = 1000 - currGun.clipSize;
         numBulletsInGun = currGun.clipSize;
         CorrectAmmoText();
-				audioManager = FindObjectOfType<AudioManager>();
+		audioManager = FindObjectOfType<AudioManager>();
+    }
+    private void Start()
+    {
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     // Update is called once per frame
@@ -58,21 +62,21 @@ public class PlayerGeneralShootController : MonoBehaviour
 
     public void ShootHandgun()
     {
-			if (numBulletsInGun > 0) {
-        CreateSmoke();
-        muzzleFlash.SetActive(true);
-        muzzleFlashTimer = 0f;
-        coolDownTimer = 0f;
-        bodyAnimator.SetTrigger("FireHandgun");
-        GameObject bullet = Instantiate(handgunBullet, gunPosition.position, transform.rotation);
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        rb.AddForce(transform.right * currGun.bulletSpeed, ForceMode2D.Impulse);
-        numBulletsInGun--;
-        CorrectAmmoText();
-				audioManager.Play("PistolShoot", 0);
-			}
-			else
-      	Reload();
+		if (numBulletsInGun > 0) {
+            CreateSmoke();
+            muzzleFlash.SetActive(true);
+            muzzleFlashTimer = 0f;
+            coolDownTimer = 0f;
+            bodyAnimator.SetTrigger("FireHandgun");
+            GameObject bullet = Instantiate(handgunBullet, gunPosition.position, transform.rotation);
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            rb.AddForce(transform.right * currGun.bulletSpeed, ForceMode2D.Impulse);
+            numBulletsInGun--;
+            CorrectAmmoText();
+			audioManager.Play("PistolShoot", 0);
+		}
+		else
+      	    Reload();
     }
 
     public void Reload()

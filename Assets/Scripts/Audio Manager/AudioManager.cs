@@ -16,7 +16,7 @@ public class AudioManager : MonoBehaviour
             instance = this;
         else
         {
-            Destroy(gameObject);
+            DestroyImmediate(gameObject);
             return;
         }
         foreach (Sound s in sounds)
