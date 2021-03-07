@@ -19,7 +19,8 @@ public class ZombieStateManager : MonoBehaviour
     private ZombieHealthManager healthManager;
     private MoveTowardsPlayer moveTowardsPlayer;
     private Rigidbody2D rigidBody;
-
+		private AudioManager audioManager;
+	
     public void Awake()
     {
         if(zombieState == ZombieState.Pacing)
@@ -30,6 +31,7 @@ public class ZombieStateManager : MonoBehaviour
         healthManager = GetComponent<ZombieHealthManager>();
         moveTowardsPlayer = GetComponent<MoveTowardsPlayer>();
         rigidBody = transform.GetComponent<Rigidbody2D>();
+				audioManager = FindObjectOfType<AudioManager>();
     }
 
     public void StartFollowingPlayer()
@@ -39,11 +41,12 @@ public class ZombieStateManager : MonoBehaviour
         Destroy(GetComponent<ZombieFieldOfViewControl>().fieldOfView.gameObject);
         zombieState = ZombieState.FollowingPlayer;
         GetComponent<PaceInCircle>().enabled = false;
+				audioManager.Play("ZombieIdle", 0, true); // loop
     }
 
     public void ZombieHitWithBullet(GameObject bullet)
     {
-        if (!bullet.name.Contains("Enemy"))
+        if (!bullet.name.Contains("Enemy")) // zombie is immune to non-player bullets
         {
             var bloodAngle = new Vector3(180f - bullet.transform.eulerAngles.z, 90f, 90f);
             GameObject impactEffectObj = Instantiate(bloodEffect);

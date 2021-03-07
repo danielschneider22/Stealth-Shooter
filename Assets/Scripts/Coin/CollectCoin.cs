@@ -17,7 +17,7 @@ public class CollectCoin : MonoBehaviour
     {
         if (collision.name == "Player")
         {
-            audioManager.Play("CollectCoin", 0);
+            audioManager.Play("CoinCollect", 0);
             GameObject particleEffect = Instantiate(coinParticleEffect, transform.position, coinParticleEffect.transform.rotation);
             Destroy(gameObject);
         }

@@ -37,7 +37,6 @@ public class PlayerGeneralShootController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-			// Debug.Log("Update");
         if (muzzleFlashTimer > muzzleFlashTime && muzzleFlash.activeSelf)
         {
             muzzleFlash.SetActive(false);
