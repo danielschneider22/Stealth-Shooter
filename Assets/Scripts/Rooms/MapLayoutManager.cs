@@ -41,7 +41,6 @@ public class MapLayoutManager : MonoBehaviour
                 {
                     direction = Random.Range(0, 5);
                 }
-                
                 PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
                 if (!DoesNewRoomOverlapWithAnyExisting(newRoomManager))
                 {
@@ -55,6 +54,7 @@ public class MapLayoutManager : MonoBehaviour
                 }
                 else
                 {
+                    newRoomManager.InitializeDoors();
                     badDirections.Add(direction);
                 }
                 if (badDirections.Count == 4)
@@ -119,10 +119,10 @@ public class MapLayoutManager : MonoBehaviour
             RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
             while (!foundGoodDirection)
             {
-                int direction = Random.Range(0, 5);
+                int direction = Random.Range(0, 4);
                 while (badDirections.Contains(direction))
                 {
-                    direction = Random.Range(0, 5);
+                    direction = Random.Range(0, 4);
                 }
                 
                 PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
@@ -172,10 +172,10 @@ public class MapLayoutManager : MonoBehaviour
                         roomId = Random.Range(0, subList.Count);
                     }
                     RoomManager currRoom = subList[roomId];
-                    int direction = Random.Range(0, 5);
+                    int direction = Random.Range(0, 4);
                     while (badDirections.Contains(direction))
                     {
-                        direction = Random.Range(0, 5);
+                        direction = Random.Range(0, 4);
                     }
 
                     PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
@@ -215,10 +215,10 @@ public class MapLayoutManager : MonoBehaviour
                 RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
                 while (!foundGoodDirection)
                 {
-                    int direction = Random.Range(0, 5);
+                    int direction = Random.Range(0, 4);
                     while (badDirections.Contains(direction))
                     {
-                        direction = Random.Range(0, 5);
+                        direction = Random.Range(0, 4);
                     }
                     
                     PositionRoomInCorrectDirection(direction, newRoomManager, currRoom);
@@ -362,6 +362,11 @@ public class MapLayoutManager : MonoBehaviour
         float room1Y2 = room1.BottomDoor.transform.position.y;
         float room2Y2 = room2.BottomDoor.transform.position.y;
 
-        return room1X1 < room2X2 && room1X2 > room2X1 && room1Y1 > room2Y2 && room1Y2 < room2Y1;
+        bool test1 = room1X1 < room2X2 && Mathf.Abs(room1X1 - room2X2) > 2;
+        bool test2 = room1X2 > room2X1 && Mathf.Abs(room1X2 - room2X1) > 2;
+        bool test3 = room1Y1 > room2Y2 && Mathf.Abs(room1Y1 - room2Y2) > 2;
+        bool test4 = room1Y2 < room2Y1 && Mathf.Abs(room1Y2 - room2Y1) > 2;
+
+        return test1 && test2 && test3 && test4;
     }
 }
