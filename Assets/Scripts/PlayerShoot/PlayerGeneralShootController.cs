@@ -49,8 +49,13 @@ public class PlayerGeneralShootController : MonoBehaviour
         {
             muzzleFlashTimer += Time.deltaTime;
         }
+        
         coolDownTimer += Time.deltaTime;
-        // cooldownBar.SetFill(coolDownTimer, currGun.cooldownTime);
+        if (cooldownBar != null)
+        {
+            cooldownBar.SetFill(coolDownTimer, currGun.cooldownTime);
+        }
+        
     }
 
     private void CreateSmoke()
@@ -84,18 +89,20 @@ public class PlayerGeneralShootController : MonoBehaviour
         bodyAnimator.speed = 1 / currGun.reloadTime;
         bodyAnimator.SetTrigger("Reload");
         isReloading = true;
-				audioManager.Play("PistolReload", 0);
+		audioManager.Play("PistolReload", 0);
     }
 
     public bool IsReloading()
     {
-        // return bodyAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Reload");
         return isReloading;
     }
 
     public void CorrectAmmoText()
     {
-        // ammoText.text = numBulletsInGun.ToString() + " / " + ammoPerGunType[currGun.gunType].ToString();
+        if(ammoText != null)
+        {
+            ammoText.text = numBulletsInGun.ToString() + " / " + ammoPerGunType[currGun.gunType].ToString();
+        }
     }
 
     public void SetNewGun(Gun newGun)
@@ -105,7 +112,7 @@ public class PlayerGeneralShootController : MonoBehaviour
         numBulletsInGun = newGun.clipSize;
         ammoPerGunType[currGun.gunType] -= newGun.clipSize;
         CorrectAmmoText();
-				audioManager.Play("WeaponSwitch", 0);
+		audioManager.Play("WeaponSwitch", 0);
     }
 
     public void CompleteReload()
