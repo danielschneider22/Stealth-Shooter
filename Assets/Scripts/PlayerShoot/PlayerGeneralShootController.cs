@@ -20,6 +20,7 @@ public class PlayerGeneralShootController : MonoBehaviour
     private bool isReloading;
     private float muzzleFlashTimer;
     private float muzzleFlashTime = .05f;
+		private AudioManager audioManager;
     public Dictionary<GunType, int> ammoPerGunType = new Dictionary<GunType, int>();
 
     public float coolDownTimer = 100f;
@@ -30,6 +31,7 @@ public class PlayerGeneralShootController : MonoBehaviour
         ammoPerGunType[GunType.Pistol] = 1000 - currGun.clipSize;
         numBulletsInGun = currGun.clipSize;
         CorrectAmmoText();
+				audioManager = FindObjectOfType<AudioManager>();
     }
 
     // Update is called once per frame
@@ -57,7 +59,7 @@ public class PlayerGeneralShootController : MonoBehaviour
 
     public void ShootHandgun()
     {
-			// Debug.Log("pew");
+			if (numBulletsInGun > 0) {
         CreateSmoke();
         muzzleFlash.SetActive(true);
         muzzleFlashTimer = 0f;
@@ -68,11 +70,10 @@ public class PlayerGeneralShootController : MonoBehaviour
         rb.AddForce(transform.right * currGun.bulletSpeed, ForceMode2D.Impulse);
         numBulletsInGun--;
         CorrectAmmoText();
-        if (numBulletsInGun <= 0)
-        {
-            Reload();
-        }
-
+				audioManager.Play("PistolShoot", 0);
+			}
+			else
+      	Reload();
     }
 
     public void Reload()
@@ -80,6 +81,7 @@ public class PlayerGeneralShootController : MonoBehaviour
         bodyAnimator.speed = 1 / currGun.reloadTime;
         bodyAnimator.SetTrigger("Reload");
         isReloading = true;
+				audioManager.Play("PistolReload", 0);
     }
 
     public bool IsReloading()
@@ -100,6 +102,7 @@ public class PlayerGeneralShootController : MonoBehaviour
         numBulletsInGun = newGun.clipSize;
         ammoPerGunType[currGun.gunType] -= newGun.clipSize;
         CorrectAmmoText();
+				audioManager.Play("WeaponSwitch", 0);
     }
 
     public void CompleteReload()

@@ -44,30 +44,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - clip: {fileID: 8300000, guid: d03b895ab5cc2464eb7429a831bb428a, type: 3}
+  - clip: {fileID: 8300000, guid: d89aa4880d9c2fb4d8380ab43a248fc6, type: 3}
     volume: 0.3
     pitch: 1
-    name: Notification
+    name: CollectCoin
     source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: b8194b8b7eb17a74881ff65b38b4212a, type: 3}
+  - clip: {fileID: 8300000, guid: da97e700e9e3d4b649c297dd0917476e, type: 3}
     volume: 0.3
     pitch: 1
-    name: MissedNotification
+    name: PistolReload
     source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: 90396f3f7c0b1494e9e58572277e66ca, type: 3}
+  - clip: {fileID: 8300000, guid: 6006cb06e3f2b45b79e4ff768b5c7753, type: 3}
     volume: 0.3
     pitch: 1
-    name: GameLoss
+    name: PistolShoot
     source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: dc57e6fa66c970a43a1c9f66b604bd8b, type: 3}
-    volume: 0.3
+  - clip: {fileID: 8300000, guid: 4596e2e76d2ba41a897c3c171b8e7ce9, type: 3}
+    volume: 0.15
     pitch: 1
-    name: GainedPoints
+    name: PistolShoot
     source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: 05ae5090cdeb199438c234a540dcb105, type: 3}
+  - clip: {fileID: 8300000, guid: 984fa61e309f24f0e9ec69e4f018db16, type: 3}
     volume: 0.3
     pitch: 1
-    name: ContinueClicked
+    name: WeaponSwitch
     source: {fileID: 0}
   - clip: {fileID: 8300000, guid: cf404d08da1de784f8947a7427bb4813, type: 3}
     volume: 0.3

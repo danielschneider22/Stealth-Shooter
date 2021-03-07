@@ -14,17 +14,10 @@ public class PlayClick : MonoBehaviour
 		Color orangeFromMuzzle = new Color32(253,175,71,255);
 		text.color = orangeFromMuzzle;
 		SceneManager.LoadSceneAsync("Scene 1");
-		// muzzleFlash.enabled = true;
 	}
     // Start is called before the first frame update
-    void Start()
-    {
-       // muzzleFlash.enabled = false; 
-    }
+    void Start() {}
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void Update() {}
 }
