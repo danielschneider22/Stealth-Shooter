@@ -44,50 +44,50 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - clip: {fileID: 8300000, guid: d03b895ab5cc2464eb7429a831bb428a, type: 3}
+  - clip: {fileID: 8300000, guid: d89aa4880d9c2fb4d8380ab43a248fc6, type: 3}
     volume: 0.3
     pitch: 1
-    name: Notification
+    name: CoinCollect
     source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: b8194b8b7eb17a74881ff65b38b4212a, type: 3}
+  - clip: {fileID: 8300000, guid: da97e700e9e3d4b649c297dd0917476e, type: 3}
     volume: 0.3
     pitch: 1
-    name: MissedNotification
+    name: PistolReload
     source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: 90396f3f7c0b1494e9e58572277e66ca, type: 3}
+  - clip: {fileID: 8300000, guid: 4596e2e76d2ba41a897c3c171b8e7ce9, type: 3}
+    volume: 0.15
+    pitch: 1
+    name: PistolShoot
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 6006cb06e3f2b45b79e4ff768b5c7753, type: 3}
     volume: 0.3
     pitch: 1
-    name: GameLoss
+    name: PistolShootLong
     source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: dc57e6fa66c970a43a1c9f66b604bd8b, type: 3}
+  - clip: {fileID: 8300000, guid: 0dd3093076f38444ea497247cf444b26, type: 3}
     volume: 0.3
     pitch: 1
-    name: GainedPoints
+    name: PlayerHurt
     source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: 05ae5090cdeb199438c234a540dcb105, type: 3}
+  - clip: {fileID: 8300000, guid: 984fa61e309f24f0e9ec69e4f018db16, type: 3}
     volume: 0.3
     pitch: 1
-    name: ContinueClicked
+    name: WeaponSwitch
     source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: cf404d08da1de784f8947a7427bb4813, type: 3}
-    volume: 0.3
-    pitch: 1
-    name: MakePurchase
-    source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: b640568bbf25a594ebde2c9982d57bb0, type: 3}
+  - clip: {fileID: 8300000, guid: 8833e56cf4bc1480d88fc9be5b7e138c, type: 3}
     volume: 0.25
     pitch: 1
-    name: PickedUpCoin
+    name: ZombieDie
     source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: 4d595a87090fa5642aa24a4b674d9ece, type: 3}
-    volume: 0.25
-    pitch: 1
-    name: MenuOpened
-    source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: c7fed59534c3a2548875ce8a07fa0c40, type: 3}
+  - clip: {fileID: 8300000, guid: 268cc2c6e804c455a9515c65d80377bd, type: 3}
     volume: 0.652
     pitch: 1
-    name: MissileHit
+    name: ZombieHurt
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 33035b5149a8b485f8ebd46cc6c8737d, type: 3}
+    volume: 0.25
+    pitch: 1
+    name: ZombieIdle
     source: {fileID: 0}
   - clip: {fileID: 8300000, guid: 9bce59e41e07f8046be74408431303f6, type: 3}
     volume: 0.559

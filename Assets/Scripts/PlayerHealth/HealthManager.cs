@@ -13,11 +13,13 @@ public class HealthManager : MonoBehaviour
 
     private float invulnerabilityTime = .5f;
     public float invulnerabilityTimer = 0f;
+		private AudioManager audioManager;
 
     // Start is called before the first frame update
     void Start()
     {
         healthText.text = health.ToString();
+				audioManager = FindObjectOfType<AudioManager>();
     }
 
     private void FixedUpdate()
@@ -41,6 +43,7 @@ public class HealthManager : MonoBehaviour
             health = health + changeAmount;
             healthText.text = health.ToString();
             playerSprite.color = Color.red;
+						audioManager.Play("PlayerHurt", 0);
         } else if (changeAmount > 0)
         {
             health = health + changeAmount;
