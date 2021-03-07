@@ -46,7 +46,7 @@ public class PlayerGeneralShootController : MonoBehaviour
             muzzleFlashTimer += Time.deltaTime;
         }
         coolDownTimer += Time.deltaTime;
-        // cooldownBar.SetFill(coolDownTimer, currGun.cooldownTime);
+        cooldownBar.SetFill(coolDownTimer, currGun.cooldownTime);
     }
 
     private void CreateSmoke()
