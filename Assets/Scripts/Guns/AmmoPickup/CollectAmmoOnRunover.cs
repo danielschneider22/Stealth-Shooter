@@ -13,7 +13,7 @@ public class CollectAmmoOnRunover : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (ammoOnGun > 0 && collision.gameObject.name == "Player 1")
+        if (ammoOnGun > 0 && collision.gameObject.name == "Player")
         {
             PlayerGeneralShootController playerShootController = collision.gameObject.GetComponent<PlayerGeneralShootController>();
             playerShootController.ammoPerGunType[gun.gunType] += ammoOnGun;
