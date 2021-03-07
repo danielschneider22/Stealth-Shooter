@@ -19,7 +19,7 @@ public class PlayerShootController : MonoBehaviour
     {
         if (Input.GetButton("Fire1") 
 					&& ((!playerGeneralShootController.IsReloading() && playerGeneralShootController.coolDownTimer > playerGeneralShootController.currGun.cooldownTime) 
-					|| (canShootOverride))
+					|| (Input.GetButtonDown("Fire1") && canShootOverride))
 				)
         {
             playerGeneralShootController.ShootHandgun();

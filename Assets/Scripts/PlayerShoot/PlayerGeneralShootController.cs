@@ -20,7 +20,7 @@ public class PlayerGeneralShootController : MonoBehaviour
     private bool isReloading;
     private float muzzleFlashTimer;
     private float muzzleFlashTime = .05f;
-		private AudioManager audioManager;
+	private AudioManager audioManager;
     public Dictionary<GunType, int> ammoPerGunType = new Dictionary<GunType, int>();
 
     public float coolDownTimer = 100f;
@@ -31,7 +31,11 @@ public class PlayerGeneralShootController : MonoBehaviour
         ammoPerGunType[GunType.Pistol] = 1000 - currGun.clipSize;
         numBulletsInGun = currGun.clipSize;
         CorrectAmmoText();
-				audioManager = FindObjectOfType<AudioManager>();
+		audioManager = FindObjectOfType<AudioManager>();
+    }
+    private void Start()
+    {
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     // Update is called once per frame
@@ -45,8 +49,12 @@ public class PlayerGeneralShootController : MonoBehaviour
         {
             muzzleFlashTimer += Time.deltaTime;
         }
+        
         coolDownTimer += Time.deltaTime;
-        cooldownBar.SetFill(coolDownTimer, currGun.cooldownTime);
+        if (cooldownBar != null)
+        {
+            cooldownBar.SetFill(coolDownTimer, currGun.cooldownTime);
+        }
     }
 
     private void CreateSmoke()
@@ -58,21 +66,21 @@ public class PlayerGeneralShootController : MonoBehaviour
 
     public void ShootHandgun()
     {
-			if (numBulletsInGun > 0) {
-        CreateSmoke();
-        muzzleFlash.SetActive(true);
-        muzzleFlashTimer = 0f;
-        coolDownTimer = 0f;
-        bodyAnimator.SetTrigger("FireHandgun");
-        GameObject bullet = Instantiate(handgunBullet, gunPosition.position, transform.rotation);
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        rb.AddForce(transform.right * currGun.bulletSpeed, ForceMode2D.Impulse);
-        numBulletsInGun--;
-        CorrectAmmoText();
-				audioManager.Play("PistolShoot", 0);
-			}
-			else
-      	Reload();
+		if (numBulletsInGun > 0) {
+            CreateSmoke();
+            muzzleFlash.SetActive(true);
+            muzzleFlashTimer = 0f;
+            coolDownTimer = 0f;
+            bodyAnimator.SetTrigger("FireHandgun");
+            GameObject bullet = Instantiate(handgunBullet, gunPosition.position, transform.rotation);
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            rb.AddForce(transform.right * currGun.bulletSpeed, ForceMode2D.Impulse);
+            numBulletsInGun--;
+            CorrectAmmoText();
+			audioManager.Play("PistolShoot", 0);
+		}
+		else
+      	    Reload();
     }
 
     public void Reload()
@@ -80,18 +88,20 @@ public class PlayerGeneralShootController : MonoBehaviour
         bodyAnimator.speed = 1 / currGun.reloadTime;
         bodyAnimator.SetTrigger("Reload");
         isReloading = true;
-				audioManager.Play("PistolReload", 0);
+		audioManager.Play("PistolReload", 0);
     }
 
     public bool IsReloading()
     {
-        // return bodyAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Reload");
         return isReloading;
     }
 
     public void CorrectAmmoText()
     {
-        // ammoText.text = numBulletsInGun.ToString() + " / " + ammoPerGunType[currGun.gunType].ToString();
+        if(ammoText != null)
+        {
+            ammoText.text = numBulletsInGun.ToString() + " / " + ammoPerGunType[currGun.gunType].ToString();
+        }
     }
 
     public void SetNewGun(Gun newGun)
@@ -101,7 +111,7 @@ public class PlayerGeneralShootController : MonoBehaviour
         numBulletsInGun = newGun.clipSize;
         ammoPerGunType[currGun.gunType] -= newGun.clipSize;
         CorrectAmmoText();
-				audioManager.Play("WeaponSwitch", 0);
+		audioManager.Play("WeaponSwitch", 0);
     }
 
     public void CompleteReload()

@@ -39,7 +39,7 @@ public class ShowStatsManager : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player 1")
+        if (collision.gameObject.name == "Player")
         {
             gunStatsUI.SetActive(true);
 
@@ -54,7 +54,7 @@ public class ShowStatsManager : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player 1")
+        if (collision.gameObject.name == "Player")
         {
             gunStatsUI.SetActive(false);
             showingPopup = false;
