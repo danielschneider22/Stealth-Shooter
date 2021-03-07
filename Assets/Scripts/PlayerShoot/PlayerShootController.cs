@@ -17,7 +17,6 @@ public class PlayerShootController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-			Debug.Log("PlayerShoot Update");
         if (Input.GetButton("Fire1") 
 					&& ((!playerGeneralShootController.IsReloading() && playerGeneralShootController.coolDownTimer > playerGeneralShootController.currGun.cooldownTime) 
 					|| (canShootOverride))
