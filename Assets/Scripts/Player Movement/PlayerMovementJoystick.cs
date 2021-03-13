@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
-public class PlayerMovementJoystick : MonoBehaviour
+public class PlayerMovementJoystick : NetworkBehaviour
 {
     public PlayerController controller;
     public Joystick joystickMovement;
@@ -14,6 +15,7 @@ public class PlayerMovementJoystick : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!hasAuthority) { return;  }
         horizontalMove = joystickMovement.Horizontal * runSpeed;
         verticalMove = joystickMovement.Vertical * runSpeed;
     }

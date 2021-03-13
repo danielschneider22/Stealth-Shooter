@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using TMPro;
 using UnityEngine;
 using static Gun;
 
-public class PlayerGeneralShootController : MonoBehaviour
+public class PlayerGeneralShootController : NetworkBehaviour
 {
 
     public Animator bodyAnimator;
@@ -41,6 +42,7 @@ public class PlayerGeneralShootController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!hasAuthority) { return; }
         if (muzzleFlashTimer > muzzleFlashTime && muzzleFlash.activeSelf)
         {
             muzzleFlash.SetActive(false);

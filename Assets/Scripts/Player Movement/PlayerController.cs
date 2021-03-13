@@ -58,6 +58,7 @@ public class PlayerController : NetworkBehaviour
 		Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
 		if(Vector2.Distance(worldMousePos, gunPosition.position) > 2f)
         {
+			if (!hasAuthority) { return; }
 			Vector3 vectorToTarget = new Vector3(worldMousePos.x + 1.25f, worldMousePos.y - 1.25f, 0) - gunPosition.position;
 			float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
 			Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -68,6 +69,7 @@ public class PlayerController : NetworkBehaviour
 
 	public void RotateWithJoystick(Joystick joystick)
 	{
+		if (!hasAuthority) { return;  }
 		/*Vector3 mousePos = Input.mousePosition;
 		Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
 		if (Vector2.Distance(worldMousePos, gunPosition.position) > 2f)
