@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
 
 	private Rigidbody2D m_Rigidbody2D;
 	public bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	public Animator animator;
+	[SerializeField]
 	private Vector3 m_Velocity = Vector3.zero;
 
 	public ParticleSystem footstepsParticleSystem;
