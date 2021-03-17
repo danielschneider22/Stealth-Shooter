@@ -56,7 +56,7 @@ public class ZombieHealthManager : MonoBehaviour
             }
         }
     }
-    public void Update()
+    public void FixedUpdate()
     {
         healthBarObj.transform.position = Camera.main.WorldToScreenPoint(transform.position);
         healthBarObj.transform.position = new Vector3(healthBarObj.transform.position.x, healthBarObj.transform.position.y + 40f, healthBarObj.transform.position.z);
