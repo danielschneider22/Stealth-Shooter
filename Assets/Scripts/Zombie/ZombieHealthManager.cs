@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,11 +13,13 @@ public class ZombieHealthManager : MonoBehaviour
     public GameObject healthBarPrefab;
     private Image healthBar;
     private GameObject healthBarObj;
+    private GameObject damageTextCanvas;
 
     private AudioManager audioManager; 
 	public void Awake() {
         audioManager = FindObjectOfType<AudioManager>();
         GameObject healthBarCanvas = GameObject.FindGameObjectWithTag("HealthBarCanvas");
+        damageTextCanvas = GameObject.FindGameObjectWithTag("DamageTextCanvas");
         healthBarObj = Instantiate(healthBarPrefab);
         healthBar = healthBarObj.transform.GetChild(1).GetComponent<Image>();
         healthBarObj.transform.SetParent(healthBarCanvas.transform);
@@ -40,6 +43,18 @@ public class ZombieHealthManager : MonoBehaviour
 			audioManager.Play("ZombieHurt", 0);
 		}
         healthBar.fillAmount = ((float)currHealth / (float)health);
+        for(var i = 0; i < damageTextCanvas.transform.childCount; i++ )
+        {
+            GameObject child = damageTextCanvas.transform.GetChild(i).gameObject;
+            if (!damageTextCanvas.transform.GetChild(i).gameObject.activeSelf)
+            {
+                child.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+                child.transform.position = new Vector3(child.transform.position.x, child.transform.position.y + 20f, child.transform.position.z);
+                child.SetActive(true);
+                child.GetComponent<TextMeshProUGUI>().text = (changeAmount * -1).ToString();
+                break;
+            }
+        }
     }
     public void Update()
     {

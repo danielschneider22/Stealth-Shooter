@@ -73,6 +73,7 @@ public class PlayerGeneralShootController : MonoBehaviour
             coolDownTimer = 0f;
             bodyAnimator.SetTrigger("FireHandgun");
             GameObject bullet = Instantiate(handgunBullet, gunPosition.position, transform.rotation);
+            bullet.GetComponent<BulletManager>().gun = currGun;
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             rb.AddForce(transform.right * currGun.bulletSpeed, ForceMode2D.Impulse);
             numBulletsInGun--;

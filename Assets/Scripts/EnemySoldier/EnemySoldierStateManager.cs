@@ -45,6 +45,7 @@ public class EnemySoldierStateManager : MonoBehaviour
     {
         if(!bullet.name.Contains("Enemy"))
         {
+            BulletManager bulletManager = bullet.GetComponent<BulletManager>();
             var bloodAngle = new Vector3(180f - bullet.transform.eulerAngles.z, 90f, 90f);
             GameObject impactEffectObj = Instantiate(bloodEffect);
             impactEffectObj.transform.position = transform.position;
@@ -56,7 +57,7 @@ public class EnemySoldierStateManager : MonoBehaviour
 
             animator.SetTrigger("Hit");
 
-            healthManager.HealthChange(Random.Range(6, 10) * -1);
+            healthManager.HealthChange(Random.Range(bulletManager.gun.damageLow, bulletManager.gun.damageHigh) * -1);
 
             if (soldierState != EnemySoldierState.FollowingPlayer)
             {
