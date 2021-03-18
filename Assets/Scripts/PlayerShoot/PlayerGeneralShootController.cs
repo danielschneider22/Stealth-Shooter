@@ -27,7 +27,7 @@ public class PlayerGeneralShootController : MonoBehaviour
 
     private void Awake()
     {
-        currGun = new Gun(1f, Color.white, 12, 100, "Starter Gun", GunType.Pistol, 60f, 1f, .3f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" }));
+        currGun = new Gun(1f, Color.white, 12, 100, "Starter Gun", GunType.Pistol, 60f, 2f, .45f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" }));
         ammoPerGunType[GunType.Pistol] = 1000 - currGun.clipSize;
         numBulletsInGun = currGun.clipSize;
         CorrectAmmoText();
