@@ -17,7 +17,7 @@ public class PlayerGeneralShootController : NetworkBehaviour
     public TextMeshProUGUI ammoText;
     public CooldownBar cooldownBar;
 
-    private int numBulletsInGun;
+    [SerializeField] private int numBulletsInGun; // server is authority on whether player needs to reload or not
     private bool isReloading;
     private float muzzleFlashTimer;
     private float muzzleFlashTime = .05f;
@@ -40,17 +40,20 @@ public class PlayerGeneralShootController : NetworkBehaviour
     }
 
     // Update is called once per frame
+    [Client]
     void Update()
     {
         if (!hasAuthority) { return; }
+
+        /* muzzle flash is aesthetic, less data sent to server if client handles validation 
+         *  on updates and only sends command if it's time to toggle muzzle flash: 
+         *  RemoveMuzzleFlashCmd called from this [Client] Update() and CreateSmokeCmd from ShootHandgun()
+        */
         if (muzzleFlashTimer > muzzleFlashTime && muzzleFlash.activeSelf)
-        {
-            muzzleFlash.SetActive(false);
-        }
+            RemoveMuzzleFlashCmd();
         else
-        {
             muzzleFlashTimer += Time.deltaTime;
-        }
+        
         
         coolDownTimer += Time.deltaTime;
         if (cooldownBar != null)
@@ -59,38 +62,81 @@ public class PlayerGeneralShootController : NetworkBehaviour
         }
     }
 
+    [Command]
+    private void RemoveMuzzleFlashCmd()
+    {
+        RemoveMuzzleFlashRpc();
+    }
+    [ClientRpc]
+    private void RemoveMuzzleFlashRpc()
+    {
+        muzzleFlash.SetActive(false);
+    }
+
+    [Client]
     private void CreateSmoke()
+    {
+        CreateSmokeCmd();
+    }
+    [Command]
+    private void CreateSmokeCmd()
+    {
+        CreateSmokeRpc();
+    }
+    [ClientRpc]
+    private void CreateSmokeRpc()
     {
         GameObject handgunSmokeObj = Instantiate(handgunSmoke);
         handgunSmokeObj.transform.position = gunPosition.position;
         handgunSmokeObj.transform.eulerAngles = new Vector3(transform.eulerAngles.z * -1, 90f, 0);
     }
 
+    [Client]
     public void ShootHandgun()
     {
-		if (numBulletsInGun > 0) {
-            CreateSmoke();
-            muzzleFlash.SetActive(true);
-            muzzleFlashTimer = 0f;
-            coolDownTimer = 0f;
-            bodyAnimator.SetTrigger("FireHandgun");
-            GameObject bullet = Instantiate(handgunBullet, gunPosition.position, transform.rotation);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            rb.AddForce(transform.right * currGun.bulletSpeed, ForceMode2D.Impulse);
-            numBulletsInGun--;
-            CorrectAmmoText();
-			audioManager.Play("PistolShoot", 0);
-		}
-		else
-      	    Reload();
+        ShootHandgunCmd();
+    }
+    [Command]
+    public void ShootHandgunCmd()
+    {
+        if (numBulletsInGun > 0) // first example of server authority validation
+            ShootHandgunRpc();
+        else
+            ReloadRpc(); // ***!!! NO LONGER VALID: calls [Command] instead of [ClientRpc] in case there is server validation required
+    }
+    [ClientRpc]
+    public void ShootHandgunRpc()
+    {        
+        CreateSmoke();
+        muzzleFlash.SetActive(true);
+        muzzleFlashTimer = 0f;
+        coolDownTimer = 0f;
+        bodyAnimator.SetTrigger("FireHandgun");
+        GameObject bullet = Instantiate(handgunBullet, gunPosition.position, transform.rotation);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        rb.AddForce(transform.right * currGun.bulletSpeed, ForceMode2D.Impulse);
+        numBulletsInGun--;
+        CorrectAmmoText();
+        audioManager.Play("PistolShoot", 0);
     }
 
+    [Client]
     public void Reload()
+    {
+        ReloadCmd();
+    }
+    [Command]
+    public void ReloadCmd()
+    {
+        ReloadRpc();
+    }
+    [ClientRpc]
+    public void ReloadRpc()
     {
         bodyAnimator.speed = 1 / currGun.reloadTime;
         bodyAnimator.SetTrigger("Reload");
         isReloading = true;
-		audioManager.Play("PistolReload", 0);
+        audioManager.Play("PistolReload", 0);
     }
 
     public bool IsReloading()
@@ -116,10 +162,16 @@ public class PlayerGeneralShootController : NetworkBehaviour
 		audioManager.Play("WeaponSwitch", 0);
     }
 
+    [Client]
     public void CompleteReload()
     {
+        CompleteReloadCmd();
+    }
+    [Command] public void CompleteReloadCmd() { CompleteReloadRpc(); }
+    [ClientRpc] public void CompleteReloadRpc()
+    {
         isReloading = false;
-        bodyAnimator.speed = 1;
+        bodyAnimator.speed = 1; // body animator is really only data that needs to be broadcast to ALL clients
         ammoPerGunType[currGun.gunType] -= currGun.clipSize - numBulletsInGun;
         numBulletsInGun = currGun.clipSize;
         CorrectAmmoText();

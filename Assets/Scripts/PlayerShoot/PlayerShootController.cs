@@ -7,7 +7,7 @@ using static Gun;
 
 public class PlayerShootController : NetworkBehaviour
 {
-		public bool	canShootOverride;
+	public bool	canShootOverride;
     private PlayerGeneralShootController playerGeneralShootController;
 
     private void Awake()
@@ -16,6 +16,7 @@ public class PlayerShootController : NetworkBehaviour
     }
 
     // Update is called once per frame
+    [Client]
     void Update()
     {
         if (!hasAuthority) { return;  }
