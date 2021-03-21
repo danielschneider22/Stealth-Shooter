@@ -13,6 +13,8 @@ public class PlayerGeneralShootController : MonoBehaviour
     public Transform gunPosition;
     public GameObject handgunBullet;
     public Gun currGun;
+    public List<Gun> gunList;
+    public List<UIWeaponController> uiGunList;
     public TextMeshProUGUI ammoText;
     public CooldownBar cooldownBar;
 
@@ -27,7 +29,10 @@ public class PlayerGeneralShootController : MonoBehaviour
 
     private void Awake()
     {
-        currGun = new Gun(1f, Color.white, 12, 100, "Starter Gun", GunType.Pistol, 60f, 2f, .45f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" }));
+        Gun gun1 = new Gun(1f, Color.white, 12, 100, "Starter Gun", GunType.Pistol, 60f, 2f, .45f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" }));
+        Gun gun2 = new Gun(1f, Color.white, 12, 100, "Starter Gun", GunType.Pistol, 60f, 2f, .45f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" }));
+        currGun = gun1;
+        gunList = new List<Gun> { gun1, gun2 };
         ammoPerGunType[GunType.Pistol] = 1000 - currGun.clipSize;
         numBulletsInGun = currGun.clipSize;
         CorrectAmmoText();
