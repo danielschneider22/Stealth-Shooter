@@ -26,7 +26,7 @@ public class PlayerGeneralShootController : MonoBehaviour
 
     public float coolDownTimer = 100f;
 
-    private void Awake()
+    private void Start()
     {
         uiGunList[0].isActive = true;
         int i = 1;
@@ -40,10 +40,6 @@ public class PlayerGeneralShootController : MonoBehaviour
         ammoPerGunType[GunType.Pistol] = 1000 - currGun.clipSize;
         numBulletsInGun = currGun.clipSize;
         CorrectAmmoText();
-		audioManager = FindObjectOfType<AudioManager>();
-    }
-    private void Start()
-    {
         audioManager = FindObjectOfType<AudioManager>();
     }
 

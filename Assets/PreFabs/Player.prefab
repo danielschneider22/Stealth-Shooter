@@ -5083,7 +5083,7 @@ GameObject:
   - component: {fileID: 2068093299887920833}
   - component: {fileID: 2068093299887920835}
   m_Layer: 9
-  m_Name: Player 1 1
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5235,6 +5235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bfb09c9dc4373448a63a26d273635c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canShootOverride: 0
 --- !u!96 &2068093299887920832
 TrailRenderer:
   serializedVersion: 2
@@ -5381,6 +5382,7 @@ MonoBehaviour:
   gunPosition: {fileID: 400208095976319339}
   handgunBullet: {fileID: 1871850237734296964, guid: 7c32be9cf47b81c48b55c9481f579c0b,
     type: 3}
+  uiGunList: []
   ammoText: {fileID: 0}
   cooldownBar: {fileID: 0}
   coolDownTimer: 0
