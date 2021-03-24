@@ -13,7 +13,6 @@ public class PlayerGeneralShootController : MonoBehaviour
     public Transform gunPosition;
     public GameObject handgunBullet;
     public Gun currGun;
-    public List<Gun> gunList;
     public List<UIWeaponController> uiGunList;
     public TextMeshProUGUI ammoText;
     public CooldownBar cooldownBar;
@@ -29,10 +28,15 @@ public class PlayerGeneralShootController : MonoBehaviour
 
     private void Awake()
     {
-        Gun gun1 = new Gun(1f, Color.white, 12, 100, "Starter Gun", GunType.Pistol, 60f, 2f, .45f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" }));
-        Gun gun2 = new Gun(1f, Color.white, 12, 100, "Starter Gun", GunType.Pistol, 60f, 2f, .45f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" }));
-        currGun = gun1;
-        gunList = new List<Gun> { gun1, gun2 };
+        uiGunList[0].isActive = true;
+        int i = 1;
+        foreach (UIWeaponController uiGun in uiGunList)
+        {
+            uiGun.playerGeneralShootController = this;
+            uiGun.setGun(new Gun(1f, Color.white, 12, 100, "Starter Gun " + i.ToString(), GunType.Pistol, 60f, 2f, .45f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" })));
+            i++;
+        }
+        currGun = uiGunList[0].getGun();
         ammoPerGunType[GunType.Pistol] = 1000 - currGun.clipSize;
         numBulletsInGun = currGun.clipSize;
         CorrectAmmoText();
@@ -60,6 +64,18 @@ public class PlayerGeneralShootController : MonoBehaviour
         {
             cooldownBar.SetFill(coolDownTimer, currGun.cooldownTime);
         }
+    }
+
+    private UIWeaponController getActiveUIWeaponController()
+    {
+        foreach(UIWeaponController uiGun in uiGunList)
+        {
+            if(uiGun.isActive)
+            {
+                return uiGun;
+            }
+        }
+        return uiGunList[0];
     }
 
     private void CreateSmoke()
@@ -114,6 +130,7 @@ public class PlayerGeneralShootController : MonoBehaviour
     {
         ammoPerGunType[currGun.gunType] += numBulletsInGun;
         currGun = newGun;
+        getActiveUIWeaponController().setGun(newGun);
         numBulletsInGun = newGun.clipSize;
         ammoPerGunType[currGun.gunType] -= newGun.clipSize;
         CorrectAmmoText();
