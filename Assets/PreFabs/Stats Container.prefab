@@ -1169,6 +1169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupPosition: {fileID: 0}
+  adjustToCenter: 0
 --- !u!114 &5992769066413281655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1193,6 +1194,10 @@ MonoBehaviour:
   outerCircle: {fileID: 2848152925947508495}
   bgName: {fileID: 2848152924394058641}
   bgStats: {fileID: 1767665678463979524}
+  gunImages:
+  - {fileID: 21300000, guid: 6b60edf29cb7056439b94561f263ba73, type: 3}
+  - {fileID: 21300000, guid: 767f0b1b614b81440a634e4966d574db, type: 3}
+  gunImage: {fileID: 2848152924196615910}
 --- !u!1 &2848152924394058643
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,9 @@ public class InitializeWithGun : MonoBehaviour
     public Image bgName;
     public Image bgStats;
 
+    public List<Sprite> gunImages;
+    public Image gunImage;
+
     public void Initialize(Gun gun, Gun playerGun)
     {
         gunName.text = gun.gunName;
@@ -28,6 +31,7 @@ public class InitializeWithGun : MonoBehaviour
         clipSize.text = gun.clipSize.ToString();
         reloadTime.text = gun.reloadTime.ToString() + " sec";
         cooldownTime.text = gun.cooldownTime.ToString();
+        gunImage.sprite = gunImages[(int)gun.gunType];
 
         if (playerGun != null)
         {
@@ -61,8 +65,25 @@ public class InitializeWithGun : MonoBehaviour
                 outerCircle.color = InitializeGunPickupColors.uncommonPrimaryColor;
                 break;
             case Rarity.Rare:
+                bgWithColor.color = new Color(.678f, .68f, .2f);
+                bgName.color = new Color(.17f, .17f, .17f);
+                bgStats.color = new Color(.5f, .5f, .24f);
+                innerCircle.color = InitializeGunPickupColors.rareDarkerColor;
+                outerCircle.color = InitializeGunPickupColors.rarePrimaryColor;
+                break;
             case Rarity.UltraRare:
+                bgWithColor.color = new Color(InitializeGunPickupColors.ultraRareDarkerColor.r + .1f, InitializeGunPickupColors.ultraRareDarkerColor.g + .1f, InitializeGunPickupColors.ultraRareDarkerColor.b + .1f, .4f);
+                bgName.color = new Color(InitializeGunPickupColors.ultraRareDarkerColor.r - .1f, InitializeGunPickupColors.ultraRareDarkerColor.g - .1f, InitializeGunPickupColors.ultraRareDarkerColor.b - .1f, .4f);
+                bgStats.color = new Color(InitializeGunPickupColors.ultraRarePrimaryColor.r - .05f, InitializeGunPickupColors.ultraRarePrimaryColor.g - .05f, InitializeGunPickupColors.ultraRarePrimaryColor.b - .05f, .4f);
+                innerCircle.color = InitializeGunPickupColors.ultraRareDarkerColor;
+                outerCircle.color = InitializeGunPickupColors.ultraRarePrimaryColor;
+                break;
             case Rarity.God:
+                bgWithColor.color = new Color(InitializeGunPickupColors.godDarkerColor.r + .1f, InitializeGunPickupColors.godDarkerColor.g + .1f, InitializeGunPickupColors.godDarkerColor.b + .1f, .4f);
+                bgName.color = new Color(InitializeGunPickupColors.godDarkerColor.r - .1f, InitializeGunPickupColors.godDarkerColor.g - .1f, InitializeGunPickupColors.godDarkerColor.b - .1f, .4f);
+                bgStats.color = new Color(InitializeGunPickupColors.godPrimaryColor.r - .05f, InitializeGunPickupColors.godPrimaryColor.g - .05f, InitializeGunPickupColors.godPrimaryColor.b - .05f, .4f);
+                innerCircle.color = InitializeGunPickupColors.godDarkerColor;
+                outerCircle.color = InitializeGunPickupColors.godPrimaryColor;
                 break;
         }
 

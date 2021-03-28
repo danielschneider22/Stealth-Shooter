@@ -4943,6 +4943,10 @@ MonoBehaviour:
   statsContainerPlayerGun: {fileID: 3975482047341544648}
   statsContainerSolo2: {fileID: 9110226179212152593}
   isNotRandomGun: 0
+  gunImages:
+  - {fileID: 21300000, guid: 6b60edf29cb7056439b94561f263ba73, type: 3}
+  - {fileID: 21300000, guid: 767f0b1b614b81440a634e4966d574db, type: 3}
+  worldGunSprite: {fileID: 6650437867619955638}
 --- !u!114 &6544872705135799638
 MonoBehaviour:
   m_ObjectHideFlags: 0

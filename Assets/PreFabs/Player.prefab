@@ -5385,6 +5385,10 @@ MonoBehaviour:
   uiGunList: []
   ammoText: {fileID: 0}
   cooldownBar: {fileID: 0}
+  gunSprites:
+  - {fileID: 21300000, guid: 6b60edf29cb7056439b94561f263ba73, type: 3}
+  - {fileID: 21300000, guid: 767f0b1b614b81440a634e4966d574db, type: 3}
+  currGunSprite: {fileID: 0}
   coolDownTimer: 0
 --- !u!1 &191377789016490494
 GameObject:

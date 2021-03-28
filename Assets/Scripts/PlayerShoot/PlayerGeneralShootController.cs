@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static Gun;
 
 public class PlayerGeneralShootController : MonoBehaviour
@@ -23,7 +24,8 @@ public class PlayerGeneralShootController : MonoBehaviour
     private float muzzleFlashTime = .05f;
 	private AudioManager audioManager;
     public Dictionary<GunType, int> ammoPerGunType = new Dictionary<GunType, int>();
-
+    public List<Sprite> gunSprites;
+    public Image currGunSprite;
     public float coolDownTimer = 100f;
 
     private void Start()
@@ -37,9 +39,9 @@ public class PlayerGeneralShootController : MonoBehaviour
             i++;
         }*/
         uiGunList[0].playerGeneralShootController = this;
-        uiGunList[0].setGun(new Gun(1f, Color.white, 12, 100, "Starter Pistol " + i.ToString(), GunType.Pistol, 60f, 2f, .45f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" })));
+        uiGunList[0].setGun(new Gun(1f, Color.white, 12, 100, "Starter Pistol", GunType.Pistol, 60f, 2f, .45f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" })));
         uiGunList[1].playerGeneralShootController = this;
-        uiGunList[1].setGun(new Gun(1f, Color.white, 12, 100, "Starter Rifle " + i.ToString(), GunType.Rifle, 60f, 3f, .1f, 1, 3, Rarity.Common, new List<string>(new string[] { "INACCURATE" })));
+        uiGunList[1].setGun(new Gun(1f, Color.white, 20, 100, "Starter Rifle", GunType.Rifle, 60f, 3f, .1f, 1, 3, Rarity.Common, new List<string>(new string[] { "INACCURATE" })));
 
         currGun = uiGunList[0].getGun();
         ammoPerGunType[GunType.Pistol] = 1000 - currGun.clipSize;
@@ -138,6 +140,7 @@ public class PlayerGeneralShootController : MonoBehaviour
         CorrectAmmoText();
 		audioManager.Play("WeaponSwitch", 0);
         bodyAnimator.SetInteger("CurrGunType", (int)currGun.gunType);
+        currGunSprite.sprite = gunSprites[(int)currGun.gunType];
     }
 
     public void CompleteReload()
