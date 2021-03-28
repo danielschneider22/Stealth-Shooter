@@ -18,7 +18,8 @@ public class Gun
     public Rarity rarity;
     public enum GunType
     {
-        Pistol
+        Pistol,
+        Rifle
     }
     public GunType gunType;
 

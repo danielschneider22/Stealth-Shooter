@@ -30,14 +30,20 @@ public class PlayerGeneralShootController : MonoBehaviour
     {
         uiGunList[0].isActive = true;
         int i = 1;
-        foreach (UIWeaponController uiGun in uiGunList)
+        /*foreach (UIWeaponController uiGun in uiGunList)
         {
             uiGun.playerGeneralShootController = this;
             uiGun.setGun(new Gun(1f, Color.white, 12, 100, "Starter Gun " + i.ToString(), GunType.Pistol, 60f, 2f, .45f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" })));
             i++;
-        }
+        }*/
+        uiGunList[0].playerGeneralShootController = this;
+        uiGunList[0].setGun(new Gun(1f, Color.white, 12, 100, "Starter Pistol " + i.ToString(), GunType.Pistol, 60f, 2f, .45f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" })));
+        uiGunList[1].playerGeneralShootController = this;
+        uiGunList[1].setGun(new Gun(1f, Color.white, 12, 100, "Starter Rifle " + i.ToString(), GunType.Rifle, 60f, 3f, .1f, 1, 3, Rarity.Common, new List<string>(new string[] { "INACCURATE" })));
+
         currGun = uiGunList[0].getGun();
         ammoPerGunType[GunType.Pistol] = 1000 - currGun.clipSize;
+        ammoPerGunType[GunType.Rifle] = 2000;
         numBulletsInGun = currGun.clipSize;
         CorrectAmmoText();
         audioManager = FindObjectOfType<AudioManager>();
@@ -88,7 +94,7 @@ public class PlayerGeneralShootController : MonoBehaviour
             muzzleFlash.SetActive(true);
             muzzleFlashTimer = 0f;
             coolDownTimer = 0f;
-            bodyAnimator.SetTrigger("FireHandgun");
+            bodyAnimator.SetTrigger("Shoot");
             GameObject bullet = Instantiate(handgunBullet, gunPosition.position, transform.rotation);
             bullet.GetComponent<BulletManager>().gun = currGun;
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
@@ -131,6 +137,7 @@ public class PlayerGeneralShootController : MonoBehaviour
         ammoPerGunType[currGun.gunType] -= newGun.clipSize;
         CorrectAmmoText();
 		audioManager.Play("WeaponSwitch", 0);
+        bodyAnimator.SetInteger("CurrGunType", (int)currGun.gunType);
     }
 
     public void CompleteReload()
