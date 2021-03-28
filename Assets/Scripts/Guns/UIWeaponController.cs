@@ -16,6 +16,8 @@ public class UIWeaponController : MonoBehaviour
     private InitializeWithGun initializeWithGun;
     public ButtonManager hideStatsButtonManager;
     public TextMeshProUGUI gunName;
+    public Image weaponIcon;
+    public List<Sprite> gunImages;
 
     private void Awake()
     {
@@ -34,6 +36,7 @@ public class UIWeaponController : MonoBehaviour
         this.gun = gun;
         gunName.text = gun.gunName;
         initializeWithGun.Initialize(gun, null);
+        weaponIcon.sprite = gunImages[(int)gun.gunType];
     }
 
     public void ToggleActive(bool isActive)
