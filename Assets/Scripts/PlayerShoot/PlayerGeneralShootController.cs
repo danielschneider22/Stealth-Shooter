@@ -41,7 +41,7 @@ public class PlayerGeneralShootController : MonoBehaviour
         uiGunList[0].playerGeneralShootController = this;
         uiGunList[0].setGun(new Gun(1f, Color.white, 12, 100, "Starter Pistol", GunType.Pistol, 60f, 2f, .45f, 3, 6, Rarity.Common, new List<string>(new string[] { "INACCURATE" })));
         uiGunList[1].playerGeneralShootController = this;
-        uiGunList[1].setGun(new Gun(1f, Color.white, 20, 100, "Starter Rifle", GunType.Rifle, 60f, 3f, .1f, 1, 3, Rarity.Common, new List<string>(new string[] { "INACCURATE" })));
+        uiGunList[1].setGun(new Gun(1f, Color.white, 20, 100, "Starter Rifle", GunType.Rifle, 60f, 3f, .25f, 1, 3, Rarity.Common, new List<string>(new string[] { "INACCURATE" })));
 
         currGun = uiGunList[0].getGun();
         ammoPerGunType[GunType.Pistol] = 1000 - currGun.clipSize;

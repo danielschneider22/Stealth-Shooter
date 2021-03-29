@@ -5387,7 +5387,7 @@ MonoBehaviour:
   - {x: -0.6700599, y: 0.025213473, z: 0}
   m_ShapePathHash: 349597741
   m_Mesh: {fileID: 0}
-  m_InstanceId: 171530
+  m_InstanceId: 180568
 --- !u!114 &6923350695650430741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5580,6 +5580,8 @@ MonoBehaviour:
   bloodPoolEffect: {fileID: 4976264212603675443, guid: 8aee5a493f35b1a4b88b6026fe77efc1,
     type: 3}
   bodyPartsEffect: {fileID: 7361154615156047080, guid: edbe9d95ddba2184f8da2d7ad8d9232e,
+    type: 3}
+  coinDropEffect: {fileID: 2263824547744855502, guid: 10d921ed57d56d145902d2ab8dc7f8ab,
     type: 3}
   healthBarPrefab: {fileID: 7776495515810841338, guid: 3bd57fef9b0ff0e41859051b82785371,
     type: 3}

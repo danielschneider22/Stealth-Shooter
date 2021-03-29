@@ -10,10 +10,12 @@ public class ZombieHealthManager : MonoBehaviour
     private int currHealth;
     public GameObject bloodPoolEffect;
     public GameObject bodyPartsEffect;
+    public GameObject coinDropEffect;
     public GameObject healthBarPrefab;
     private Image healthBar;
     private GameObject healthBarObj;
     private GameObject damageTextCanvas;
+    private Transform player;
 
     private AudioManager audioManager; 
 	public void Awake() {
@@ -25,6 +27,7 @@ public class ZombieHealthManager : MonoBehaviour
         healthBarObj.transform.SetParent(healthBarCanvas.transform);
         healthBarObj.transform.position = Camera.main.WorldToScreenPoint(transform.position);
         currHealth = health;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
     // Start is called before the first frame update
     public void HealthChange(int changeAmount)
@@ -35,6 +38,11 @@ public class ZombieHealthManager : MonoBehaviour
             bloodPool.transform.position = transform.position;
             GameObject bodyParts = Instantiate(bodyPartsEffect);
             bodyParts.transform.position = transform.position;
+            GameObject coinDrop = Instantiate(coinDropEffect);
+            coinDrop.GetComponent<ParticleAttractor>()._attractorTransform = player;
+            ParticleSystem.MainModule coinEffectMain = coinDrop.GetComponent<ParticleSystem>().main;
+            coinEffectMain.maxParticles = GetCoinDropAmount();
+            coinDrop.transform.position = transform.position;
 			audioManager.Play("ZombieDie", 0); // TODO: calculate distance from player instead of passing 0
 		    audioManager.Stop("ZombieIdle"); // @danielschneider22: don't know how multiple idle zombie sounds will be handled with Brackeys AudioManager	
             Destroy(gameObject);
@@ -55,6 +63,18 @@ public class ZombieHealthManager : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public int GetCoinDropAmount()
+    {
+        if(gameObject.name.Contains("Zombie"))
+        {
+            return Random.Range(3, 8);
+        } else if(gameObject.name.Contains("Soldier"))
+        {
+            return Random.Range(20, 30);
+        }
+        return 0;
     }
     public void FixedUpdate()
     {

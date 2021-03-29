@@ -27,7 +27,7 @@ public class GunStatsManager : MonoBehaviour
                 gun = new Gun(1f, Color.white, GetRandomClipSize(), 100, GunNameGenerator.GeneratePistolName(rarity), GunType.Pistol, 60f, GetRandomReloadTime(), GetRandomCooldownTime(), GetRandomLowDamage(rarity), GetRandomHighDamage(rarity), rarity, new List<string>());
                 break;
             case 1:
-                gun = new Gun(1f, Color.white, GetRandomClipSize(), 100, GunNameGenerator.GenerateRifleName(rarity), GunType.Rifle, 60f, GetRandomReloadTimeRifle(), GetRandomCooldownTime(), GetRandomLowDamageRifle(rarity), GetRandomHighDamageRifle(rarity), rarity, new List<string>());
+                gun = new Gun(1f, Color.white, GetRandomClipSizeRifle(), 100, GunNameGenerator.GenerateRifleName(rarity), GunType.Rifle, 60f, GetRandomReloadTimeRifle(), GetRandomCooldownTimeRifle(), GetRandomLowDamageRifle(rarity), GetRandomHighDamageRifle(rarity), rarity, new List<string>());
                 break;
         }
         InitializeGunDrop(gun);
@@ -135,7 +135,7 @@ public class GunStatsManager : MonoBehaviour
 
     private float GetRandomCooldownTime()
     {
-        return Mathf.Round(Random.Range(.15f, .5f) * 100f) / 100f;
+        return Mathf.Round(Random.Range(.10f, .25f) * 100f) / 100f;
     }
 
     private float GetRandomCooldownTimeRifle()
