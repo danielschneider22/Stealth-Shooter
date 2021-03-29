@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - clip: {fileID: 8300000, guid: d89aa4880d9c2fb4d8380ab43a248fc6, type: 3}
-    volume: 0.3
+    volume: 0.266
     pitch: 1
     name: CoinCollect
     source: {fileID: 0}
