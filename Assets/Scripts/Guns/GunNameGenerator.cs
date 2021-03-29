@@ -35,9 +35,9 @@ public class GunNameGenerator : MonoBehaviour
         switch (rarity)
         {
             case Rarity.Common:
-                return pistolCommonAdjectives[Random.Range(0, pistolCommonAdjectives.Count - 1)] + " " + pistolNouns[Random.Range(0, pistolNouns.Count - 1)];
+                return pistolCommonAdjectives[Random.Range(0, pistolCommonAdjectives.Count - 1)] + " " + rifleNouns[Random.Range(0, rifleNouns.Count - 1)];
             case Rarity.Uncommon:
-                return pistolAdjectives[Random.Range(0, pistolAdjectives.Count - 1)] + " " + pistolNouns[Random.Range(0, pistolNouns.Count - 1)];
+                return pistolAdjectives[Random.Range(0, pistolAdjectives.Count - 1)] + " " + rifleNouns[Random.Range(0, rifleNouns.Count - 1)];
             case Rarity.Rare:
                 return rarePistolNames[Random.Range(0, rarePistolNames.Count - 1)];
             case Rarity.UltraRare:

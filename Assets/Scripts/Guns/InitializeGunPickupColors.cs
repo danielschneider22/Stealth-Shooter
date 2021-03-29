@@ -25,8 +25,8 @@ public class InitializeGunPickupColors : MonoBehaviour
         switch (gun.rarity)
         {
             case Rarity.Common:
-                innerLight.color = commonPrimaryColor;
-                outerCircleLight.color = commonDarkerColor;
+                innerLight.color = new Color(0.3339623f, 0.252827f, 0.1108402f);
+                outerCircleLight.color = new Color(0.1862745f, 0.1039216f, 0.06666667f);
                 main.startColor = new ParticleSystem.MinMaxGradient(commonDarkerColor, commonPrimaryColor);
                 break;
             case Rarity.Uncommon:
