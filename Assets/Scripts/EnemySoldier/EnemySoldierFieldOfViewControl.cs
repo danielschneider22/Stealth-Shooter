@@ -43,7 +43,10 @@ public class EnemySoldierFieldOfViewControl : MonoBehaviour
             pointObj.GetComponent<FollowCharacter>().characterToFollow = transform;
             pointObj.GetComponent<FollowCharacter>().yOffsetFromChar = 3f;
             fieldOfView.fov = 360f;
-            // Destroy(fieldOfView.gameObject);
+            if(moveTowardsPlayer.moveTowardPlayerType != MoveTowardsPlayer.MoveTowardPlayerType.KeepPlayerInView)
+            {
+                Destroy(fieldOfView.gameObject);
+            }
         }
         if (raycastHit2D.collider.gameObject.name.Contains("Player"))
         {
@@ -55,5 +58,15 @@ public class EnemySoldierFieldOfViewControl : MonoBehaviour
     private void PlayerNotFound()
     {
         moveTowardsPlayer.playerVisible = false;
+    }
+
+    private void OnDisable()
+    {
+        fieldOfView.gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        fieldOfView.gameObject.SetActive(true);
     }
 }

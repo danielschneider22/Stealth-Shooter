@@ -49,4 +49,14 @@ public class ZombieFieldOfViewControl : MonoBehaviour
     {
         moveTowardsPlayer.playerVisible = false;
     }
+
+    private void OnDisable()
+    {
+        fieldOfView.gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        fieldOfView.gameObject.SetActive(true);
+    }
 }
