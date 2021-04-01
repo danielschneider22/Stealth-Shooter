@@ -10,7 +10,7 @@ public class ParticleAttractor : MonoBehaviour
     private ParticleSystem _particleSystem;
     private ParticleSystem.Particle[] _particles = new ParticleSystem.Particle[1000];
     private float particleTime = 0f;
-    private float waitTime = 1f;
+    public float waitTime = .7f;
 
     public void Start()
     {

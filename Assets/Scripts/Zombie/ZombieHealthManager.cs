@@ -12,6 +12,7 @@ public class ZombieHealthManager : MonoBehaviour
     public GameObject bodyPartsEffect;
     public GameObject coinDropEffect;
     public GameObject healthBarPrefab;
+    public GameObject ammoDropEffect;
     private Image healthBar;
     private GameObject healthBarObj;
     private GameObject damageTextCanvas;
@@ -44,7 +45,14 @@ public class ZombieHealthManager : MonoBehaviour
             coinEffectMain.maxParticles = GetCoinDropAmount();
             coinDrop.transform.position = transform.position;
 			audioManager.Play("ZombieDie", 0); // TODO: calculate distance from player instead of passing 0
-		    audioManager.Stop("ZombieIdle"); // @danielschneider22: don't know how multiple idle zombie sounds will be handled with Brackeys AudioManager	
+		    audioManager.Stop("ZombieIdle"); // @danielschneider22: don't know how multiple idle zombie sounds will be handled with Brackeys AudioManager
+            
+            if(gameObject.name.Contains("Soldier"))
+            {
+                GameObject ammoDrop = Instantiate(ammoDropEffect);
+                ammoDrop.GetComponent<ParticleAttractor>()._attractorTransform = player;
+                ammoDrop.transform.position = transform.position;
+            }
             Destroy(gameObject);
         }
 		else {

@@ -52,7 +52,10 @@ public class ZombieFieldOfViewControl : MonoBehaviour
 
     private void OnDisable()
     {
-        fieldOfView.gameObject.SetActive(false);
+        if(fieldOfView != null)
+        {
+            fieldOfView.gameObject.SetActive(false);
+        }
     }
 
     private void OnEnable()
