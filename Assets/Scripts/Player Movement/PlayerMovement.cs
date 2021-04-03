@@ -20,7 +20,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if (!IsLocalPlayer) return;
+        // if (!IsLocalPlayer) return;
         controller.Move(horizontalMove * Time.fixedDeltaTime, verticalMove * Time.fixedDeltaTime);
         controller.RotateTowardsMouse();
     }

@@ -1,10 +1,17 @@
 ﻿using System.Collections.Generic;
 using MLAPI;
+using MLAPI.Messaging;
+using MLAPI.NetworkVariable;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class PlayerController : NetworkBehaviour
 {
+	public NetworkVariableVector3 Position = new NetworkVariableVector3(new NetworkVariableSettings
+	{
+		WritePermission = NetworkVariablePermission.ServerOnly,
+		ReadPermission = NetworkVariablePermission.Everyone
+	});
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
 
 	private Rigidbody2D m_Rigidbody2D;
@@ -37,9 +44,22 @@ public class PlayerController : NetworkBehaviour
 	{
 		// calc target velocity, then smooth + apply to character (brackeys movement tutorial)
 		Vector3 targetVelocity = new Vector2(moveHorizontal * 10f, moveVertical * 10f);
-		m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+		Vector3 finalVelocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
 		feetAnimator.speed = (moveHorizontal == 0 && moveVertical == 0) ? 0 : 1;
+
+        if (IsServer)
+            Position.Value = finalVelocity;
+        else
+            SyncPlayerPositionServerRpc(finalVelocity);
+
+		m_Rigidbody2D.velocity = Position.Value;
+	}
+
+	[ServerRpc]
+	private void SyncPlayerPositionServerRpc(Vector3 finalVelocity)
+    {
+		Position.Value = finalVelocity;
 	}
 
 	public void RotateTowardsMouse()
