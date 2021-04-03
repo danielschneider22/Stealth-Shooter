@@ -39,14 +39,7 @@ public class PlayerController : NetworkBehaviour
 		Vector3 targetVelocity = new Vector2(moveHorizontal * 10f, moveVertical * 10f);
 		m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
-		if(moveHorizontal == 0 && moveVertical == 0)
-        {
-			feetAnimator.speed = 0;
-		} else
-        {
-			feetAnimator.speed = 1;
-        }
-
+		feetAnimator.speed = (moveHorizontal == 0 && moveVertical == 0) ? 0 : 1;
 	}
 
 	public void RotateTowardsMouse()
