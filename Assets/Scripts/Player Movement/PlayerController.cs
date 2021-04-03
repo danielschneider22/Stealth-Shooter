@@ -35,10 +35,8 @@ public class PlayerController : NetworkBehaviour
 
 	public void Move(float moveHorizontal, float moveVertical)
 	{
-		//only control the player if grounded or airControl is turned on
-		// Move the character by finding the target velocity
+		// calc target velocity, then smooth + apply to character (brackeys movement tutorial)
 		Vector3 targetVelocity = new Vector2(moveHorizontal * 10f, moveVertical * 10f);
-		// And then smoothing it out and applying it to the character
 		m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
 		if(moveHorizontal == 0 && moveVertical == 0)
