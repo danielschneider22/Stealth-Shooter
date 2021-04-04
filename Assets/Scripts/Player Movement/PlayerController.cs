@@ -46,20 +46,22 @@ public class PlayerController : NetworkBehaviour
 		Vector3 targetVelocity = new Vector2(moveHorizontal * 10f, moveVertical * 10f);
 		Vector3 finalVelocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
-		feetAnimator.speed = (moveHorizontal == 0 && moveVertical == 0) ? 0 : 1;
+		feetAnimator.speed = (moveHorizontal == 0 && moveVertical == 0) ? 0 : 1; // TODO: network replicate animations
 
-        if (IsServer)
-            Position.Value = finalVelocity;
-        else
-            SyncPlayerPositionServerRpc(finalVelocity);
-
-		m_Rigidbody2D.velocity = Position.Value;
+		if (NetworkManager.Singleton.IsServer)
+			Position.Value = finalVelocity;
+		else
+			SyncPlayerPositionServerRpc(finalVelocity);
 	}
 
 	[ServerRpc]
 	private void SyncPlayerPositionServerRpc(Vector3 finalVelocity)
     {
 		Position.Value = finalVelocity;
+	}
+    private void Update()
+    {
+		m_Rigidbody2D.velocity = Position.Value;
 	}
 
 	public void RotateTowardsMouse()
