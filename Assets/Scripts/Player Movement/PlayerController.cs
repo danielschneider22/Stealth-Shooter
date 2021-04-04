@@ -7,11 +7,6 @@ using UnityEngine.Events;
 
 public class PlayerController : NetworkBehaviour
 {
-	public NetworkVariableVector3 Position = new NetworkVariableVector3(new NetworkVariableSettings
-	{
-		WritePermission = NetworkVariablePermission.ServerOnly,
-		ReadPermission = NetworkVariablePermission.Everyone
-	});
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
 
 	private Rigidbody2D m_Rigidbody2D;
@@ -46,22 +41,8 @@ public class PlayerController : NetworkBehaviour
 		Vector3 targetVelocity = new Vector2(moveHorizontal * 10f, moveVertical * 10f);
 		Vector3 finalVelocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
+		m_Rigidbody2D.velocity = finalVelocity;
 		feetAnimator.speed = (moveHorizontal == 0 && moveVertical == 0) ? 0 : 1; // TODO: network replicate animations
-
-		if (NetworkManager.Singleton.IsServer)
-			Position.Value = finalVelocity;
-		else
-			SyncPlayerPositionServerRpc(finalVelocity);
-	}
-
-	[ServerRpc]
-	private void SyncPlayerPositionServerRpc(Vector3 finalVelocity)
-    {
-		Position.Value = finalVelocity;
-	}
-    private void Update()
-    {
-		m_Rigidbody2D.velocity = Position.Value;
 	}
 
 	public void RotateTowardsMouse()
