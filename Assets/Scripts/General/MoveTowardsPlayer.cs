@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MLAPI;
 
-public class MoveTowardsPlayer : MonoBehaviour
+public class MoveTowardsPlayer : NetworkBehaviour
 {
 
     private Transform player;
@@ -27,9 +28,10 @@ public class MoveTowardsPlayer : MonoBehaviour
 
     private Rigidbody2D m_Rigidbody2D;
 
-    private void Awake()
+    public override void NetworkStart()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
+        // TODO: @allenwhitedev handle multiple Players (Player tag)
         player = GameObject.FindGameObjectWithTag("Player").transform;
         sinMovementRandModifier = Random.Range(-100.0f, 100.0f);
     }
