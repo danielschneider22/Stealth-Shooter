@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MLAPI;
+using MLAPI.Messaging;
+using System.Linq;
 
-public class MapLayoutManager : MonoBehaviour
+public class MapLayoutManager : NetworkBehaviour
 {
     public RoomManager initRoomManager;
     public List<GameObject> mediumRoomPrefabs;
@@ -15,13 +18,36 @@ public class MapLayoutManager : MonoBehaviour
     private GameObject newRoom;
     private List<RoomManager> pathFromEntranceToExit;
     private List<RoomManager> pathFromEntranceToExitSiblings;
-    private List<RoomManager> allRooms;
-    private void Start()
+    public List<RoomManager> allRooms; // TODO: @allenwhitedev put public -> private when done network debugging
+    public override void NetworkStart()
     {
+        if (!IsServer) return; // server generates map, for now waits until a client joins
         allRooms = new List<RoomManager>() { initRoomManager };
         CreatePathFromStartToExit();
         CreateSubBranches();
         CreateTreasureRooms();
+        // Server own MapLayoutManager so clients cannot call ServerRpc from here, they must call from an object they own which is currently just their Player prefab
+        // GenerateMapServerRpc(); // client does not own MapLayoutManager so can't call, plus this is temporary anyways to test if server spawned object only appear for already-joined clients
+    }
+
+    [ServerRpc]
+    public void GenerateMapServerRpc() // can we call a ClientRpc directly from a client?
+    {
+        GenerateMapClientRpc();
+        //allRooms = new List<RoomManager>() { initRoomManager };
+        //CreatePathFromStartToExit();
+        //CreateSubBranches();
+        //CreateTreasureRooms();
+        //GenerateMapClientRpc();
+    }
+
+    [ClientRpc]
+    public void GenerateMapClientRpc(/*List<RoomManager _allRooms ~ MLAPI will say RoomManager is notnetwork serializable */)
+    {
+        Debug.Log("GenerateMapClientRpc");
+        List<RoomManager> temp = GameObject.FindObjectsOfType<RoomManager>().ToList();
+        temp.Reverse();
+        allRooms = temp;
     }
 
     private void CreatePathFromStartToExit()
@@ -33,6 +59,7 @@ public class MapLayoutManager : MonoBehaviour
         {
             bool foundGoodDirection = false;
             newRoom = i == numRoomsToGenerate - 1 ? Instantiate(exitRoom) : Instantiate(GetRandomRoom());
+            newRoom.GetComponent<NetworkObject>().Spawn();
             RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
             while (!foundGoodDirection)
             {
@@ -116,6 +143,7 @@ public class MapLayoutManager : MonoBehaviour
         {
             bool foundGoodDirection = false;
             newRoom = Instantiate(GetRandomRoom());
+            newRoom.GetComponent<NetworkObject>().Spawn();
             RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
             while (!foundGoodDirection)
             {
@@ -163,6 +191,7 @@ public class MapLayoutManager : MonoBehaviour
             {
                 bool foundGoodDirection = false;
                 newRoom = Instantiate(GetRandomTreasureRoom());
+                newRoom.GetComponent<NetworkObject>().Spawn();
                 RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
                 while (!foundGoodDirection)
                 {
@@ -212,6 +241,7 @@ public class MapLayoutManager : MonoBehaviour
                 RoomManager currRoom = allRooms[i];
                 bool foundGoodDirection = false;
                 newRoom = Instantiate(GetRandomTreasureRoom());
+                newRoom.GetComponent<NetworkObject>().Spawn();
                 RoomManager newRoomManager = newRoom.GetComponent<RoomManager>();
                 while (!foundGoodDirection)
                 {

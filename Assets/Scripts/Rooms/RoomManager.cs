@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MLAPI;
 
-public class RoomManager : MonoBehaviour
+public class RoomManager : NetworkBehaviour // TODO: allenwhitedev not sure if this needs to be NetworkBehavior or can remain MonoBehavior on a GameObject with a NetworkObject component
 {
     public GameObject LeftDoor;
     public GameObject RightDoor;
