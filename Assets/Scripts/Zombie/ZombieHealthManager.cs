@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using MLAPI;
 
-public class ZombieHealthManager : MonoBehaviour
+public class ZombieHealthManager : NetworkBehaviour
 {
     public int health = 40;
     private int currHealth;
@@ -19,7 +20,7 @@ public class ZombieHealthManager : MonoBehaviour
     private Transform player;
 
     private AudioManager audioManager; 
-	public void Awake() {
+	public override void NetworkStart() {
         audioManager = FindObjectOfType<AudioManager>();
         GameObject healthBarCanvas = GameObject.FindGameObjectWithTag("HealthBarCanvas");
         damageTextCanvas = GameObject.FindGameObjectWithTag("DamageTextCanvas");
@@ -28,6 +29,7 @@ public class ZombieHealthManager : MonoBehaviour
         healthBarObj.transform.SetParent(healthBarCanvas.transform);
         healthBarObj.transform.position = Camera.main.WorldToScreenPoint(transform.position);
         currHealth = health;
+        // TODO: @allenwhitedev handle multiple Players (Player tag)
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
     // Start is called before the first frame update
@@ -86,6 +88,7 @@ public class ZombieHealthManager : MonoBehaviour
     }
     public void FixedUpdate()
     {
+        if (!healthBarObj) return; // TODO: @allenwhitedev is there a way to prevent Updated/FixedUpdate/etc. running before NetworkStart?
         healthBarObj.transform.position = Camera.main.WorldToScreenPoint(transform.position);
         healthBarObj.transform.position = new Vector3(healthBarObj.transform.position.x, healthBarObj.transform.position.y + 40f, healthBarObj.transform.position.z);
     }
@@ -98,6 +101,7 @@ public class ZombieHealthManager : MonoBehaviour
     }
     public void OnEnable()
     {
+        if (!healthBarObj) return; // TODO: @allenwhitedev is there a way to prevent Updated/FixedUpdate/etc. running before NetworkStart?
         healthBarObj.SetActive(true);
     }
     public void OnDestroy()

@@ -24,7 +24,8 @@ public class PaceInCircle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<MoveTowardsPlayer>().animator.SetTrigger("StartWalking");
+        // TODO: @allenwhitedev low-priority network-break fix -> console warning: Paramater 'StartWalking' does not exist
+        // GetComponent<MoveTowardsPlayer>().animator.SetTrigger("StartWalking");
     }
 
     // Update is called once per frame

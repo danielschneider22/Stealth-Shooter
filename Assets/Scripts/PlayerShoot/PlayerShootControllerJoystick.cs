@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using static Gun;
+using MLAPI;
 
-public class PlayerShootControllerJoystick : MonoBehaviour
+public class PlayerShootControllerJoystick : NetworkBehaviour
 {
     public Joystick joystickShooting;
 
@@ -18,7 +19,8 @@ public class PlayerShootControllerJoystick : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if((joystickShooting.Horizontal != 0 || joystickShooting.Vertical != 0) && !playerGeneralShootController.IsReloading() && playerGeneralShootController.coolDownTimer > playerGeneralShootController.currGun.cooldownTime)
+        if (!IsLocalPlayer) return;
+        if ((joystickShooting.Horizontal != 0 || joystickShooting.Vertical != 0) && !playerGeneralShootController.IsReloading() && playerGeneralShootController.coolDownTimer > playerGeneralShootController.currGun.cooldownTime)
         {
             playerGeneralShootController.ShootHandgun();
         }

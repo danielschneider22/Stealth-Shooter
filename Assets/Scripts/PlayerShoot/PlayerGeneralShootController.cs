@@ -31,7 +31,7 @@ public class PlayerGeneralShootController : MonoBehaviour
     private void Start()
     {
         uiGunList[0].isActive = true;
-        int i = 1;
+        // TODO: @dschneider22 implement more weapons int i = 1; 
         /*foreach (UIWeaponController uiGun in uiGunList)
         {
             uiGun.playerGeneralShootController = this;

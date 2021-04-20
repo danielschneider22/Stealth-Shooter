@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using MLAPI;
+using MLAPI.Messaging;
+using MLAPI.NetworkVariable;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
 
@@ -25,7 +28,18 @@ public class PlayerController : MonoBehaviour
 
 	private AudioManager audioManager;
 
-	private void Awake()
+	public MapLayoutManager mapLayoutManager;
+
+    public override void NetworkStart()
+    {
+        base.NetworkStart();
+		mapLayoutManager = GameObject.FindObjectOfType<MapLayoutManager>();
+		// TODO: @allenwhitedev confirm #1 we must call client RPCs using ServerRPCs only from clients can we call client rpc directly here, better yet can
+		// TODO: @allenwhitdev confirm #2 we must call RPCs only from objects we control so client will basically only be able to call RPCs on server-owned objects from their client-owned Player prefab
+		mapLayoutManager.GenerateMapServerRpc(); 
+    }
+
+    private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 
@@ -34,20 +48,12 @@ public class PlayerController : MonoBehaviour
 
 	public void Move(float moveHorizontal, float moveVertical)
 	{
-		//only control the player if grounded or airControl is turned on
-		// Move the character by finding the target velocity
+		// calc target velocity, then smooth + apply to character (brackeys movement tutorial)
 		Vector3 targetVelocity = new Vector2(moveHorizontal * 10f, moveVertical * 10f);
-		// And then smoothing it out and applying it to the character
-		m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+		Vector3 finalVelocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
-		if(moveHorizontal == 0 && moveVertical == 0)
-        {
-			feetAnimator.speed = 0;
-		} else
-        {
-			feetAnimator.speed = 1;
-        }
-
+		m_Rigidbody2D.velocity = finalVelocity;
+		feetAnimator.speed = (moveHorizontal == 0 && moveVertical == 0) ? 0 : 1; // TODO: network replicate animations
 	}
 
 	public void RotateTowardsMouse()
