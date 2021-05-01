@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MLAPI;
+using MLAPI.Messaging;
 using UnityEngine;
 
-public class DestroyBullet : MonoBehaviour
+public class DestroyBullet : NetworkBehaviour
 {
     private float instantiateTimer;
     public float deathTime = 3f;
@@ -13,7 +15,15 @@ public class DestroyBullet : MonoBehaviour
         instantiateTimer += Time.deltaTime;
         if(instantiateTimer >= deathTime)
         {
-            Destroy(gameObject);
+            if (!NetworkManager.Singleton.IsServer) return;
+            DespawnBulletServerRpc();
         }
+    }
+    
+    // - network RPCs
+    [ServerRpc(Delivery = RpcDelivery.Reliable)]
+    public void DespawnBulletServerRpc()
+    {
+        GetComponent<NetworkObject>().Despawn(true);
     }
 }

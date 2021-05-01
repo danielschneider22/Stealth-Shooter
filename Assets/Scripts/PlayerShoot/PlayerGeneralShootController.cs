@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MLAPI;
+using MLAPI.Messaging;
+using MLAPI.Spawning;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Gun;
 
-public class PlayerGeneralShootController : MonoBehaviour
+public class PlayerGeneralShootController : NetworkBehaviour
 {
 
     public Animator bodyAnimator;
@@ -97,13 +100,7 @@ public class PlayerGeneralShootController : MonoBehaviour
             muzzleFlashTimer = 0f;
             coolDownTimer = 0f;
             bodyAnimator.SetTrigger("Shoot");
-            GameObject bullet = Instantiate(handgunBullet, gunPosition.position, transform.rotation);
-            bullet.GetComponent<BulletManager>().gun = currGun;
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            rb.AddForce(transform.right * currGun.bulletSpeed, ForceMode2D.Impulse);
-            numBulletsInGun--;
-            CorrectAmmoText();
-			audioManager.Play("PistolShoot", 0);
+            SpawnBulletServerRpc();
 		}
 		else
       	    Reload();
@@ -150,6 +147,35 @@ public class PlayerGeneralShootController : MonoBehaviour
         ammoPerGunType[currGun.gunType] -= currGun.clipSize - numBulletsInGun;
         numBulletsInGun = currGun.clipSize;
         CorrectAmmoText();
+    }
+
+    // - network RPCs
+    [ServerRpc(Delivery = RpcDelivery.Reliable)]
+    private void SpawnBulletServerRpc()
+    {
+        GameObject bullet = Instantiate(handgunBullet, gunPosition.position, transform.rotation);
+        NetworkObject bulletNetObj = bullet.GetComponent<NetworkObject>();
+        bulletNetObj.Spawn();
+        ulong bulletNetId = bulletNetObj.NetworkObjectId;
+        ShootBulletClientRpc(bulletNetId);
+    }
+    [ClientRpc(Delivery = RpcDelivery.Reliable)]
+    private void ShootBulletClientRpc(ulong bulletNetId)
+    {
+         // running dev locally ~1/10 times this id is not yet in the dictionary on a client
+        // this is an MLAPI issue: https://github.com/Unity-Technologies/com.unity.multiplayer.mlapi/issues/790
+        // there are workarounds like catching this and trying it in the update() loop for a configurable delta time
+        NetworkSpawnManager.SpawnedObjects.TryGetValue(bulletNetId, out NetworkObject bulletNetObj);
+        if (bulletNetObj == null) return;
+        
+        GameObject bullet = bulletNetObj.gameObject;
+        bullet.GetComponent<BulletManager>().gun = currGun;
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        rb.AddForce(transform.right * currGun.bulletSpeed, ForceMode2D.Impulse);
+
+        CorrectAmmoText();
+		audioManager.Play("PistolShoot", 0);
+        numBulletsInGun--; // candidate for server authority network variable
     }
 }
 

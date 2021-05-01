@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1957637217795469728}
   - component: {fileID: 3485045272114781231}
   - component: {fileID: 4001957510494746569}
+  - component: {fileID: 4067772598834292402}
   m_Layer: 0
   m_Name: HandgunBullet
   m_TagString: Untagged
@@ -247,3 +248,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da8bbcdca2de8d74fa952e6b710c7834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4067772598834292402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1871850237734296964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkInstanceId: 0
+  PrefabHash: 14944803614112101588
+  PrefabHashGenerator: HandgunBullet
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
