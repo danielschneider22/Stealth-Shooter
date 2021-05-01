@@ -26,28 +26,6 @@ public class MapLayoutManager : NetworkBehaviour
         CreatePathFromStartToExit();
         CreateSubBranches();
         CreateTreasureRooms();
-        // Server own MapLayoutManager so clients cannot call ServerRpc from here, they must call from an object they own which is currently just their Player prefab
-        // GenerateMapServerRpc(); // client does not own MapLayoutManager so can't call, plus this is temporary anyways to test if server spawned object only appear for already-joined clients
-    }
-
-    [ServerRpc]
-    public void GenerateMapServerRpc() // can we call a ClientRpc directly from a client?
-    {
-        GenerateMapClientRpc();
-        //allRooms = new List<RoomManager>() { initRoomManager };
-        //CreatePathFromStartToExit();
-        //CreateSubBranches();
-        //CreateTreasureRooms();
-        //GenerateMapClientRpc();
-    }
-
-    [ClientRpc]
-    public void GenerateMapClientRpc(/*List<RoomManager _allRooms ~ MLAPI will say RoomManager is notnetwork serializable */)
-    {
-        Debug.Log("GenerateMapClientRpc");
-        List<RoomManager> temp = GameObject.FindObjectsOfType<RoomManager>().ToList();
-        temp.Reverse();
-        allRooms = temp;
     }
 
     private void CreatePathFromStartToExit()
@@ -81,7 +59,7 @@ public class MapLayoutManager : NetworkBehaviour
                 }
                 else
                 {
-                    newRoomManager.InitializeDoors();
+                    newRoomManager.InitializeDoorsServerRpc();
                     badDirections.Add(direction);
                 }
                 if (badDirections.Count == 4)
@@ -165,7 +143,7 @@ public class MapLayoutManager : NetworkBehaviour
                 }
                 else
                 {
-                    newRoomManager.InitializeDoors();
+                    newRoomManager.InitializeDoorsServerRpc();
                     badDirections.Add(direction);
                 }
                 if (badDirections.Count == 4)
@@ -219,7 +197,7 @@ public class MapLayoutManager : NetworkBehaviour
                     }
                     else
                     {
-                        newRoomManager.InitializeDoors();
+                        newRoomManager.InitializeDoorsServerRpc();
                         badDirections.Add(direction);
                     }
                     if (badDirections.Count == 4)
@@ -266,7 +244,7 @@ public class MapLayoutManager : NetworkBehaviour
                     }
                     else
                     {
-                        newRoomManager.InitializeDoors();
+                        newRoomManager.InitializeDoorsServerRpc();
                         badDirections.Add(direction);
                     }
                     if (badDirections.Count == 4)
@@ -291,7 +269,7 @@ public class MapLayoutManager : NetworkBehaviour
                 diffX = newRoomManager.RightDoor.transform.position.x - currRoom.LeftDoor.transform.position.x;
                 diffY = newRoomManager.RightDoor.transform.position.y - currRoom.LeftDoor.transform.position.y;
                 newRoom.transform.position = new Vector3(newRoom.transform.position.x - diffX, newRoom.transform.position.y - diffY, 0);
-                newRoomManager.RightDoor.SetActive(false);
+                newRoomManager.RightDoor.GetComponent<HideDoor>().SetActiveServerRpc(false);
                 newRoomManager.RightRoom = currRoom;
                 break;
             // Right
@@ -299,7 +277,7 @@ public class MapLayoutManager : NetworkBehaviour
                 diffX = newRoomManager.LeftDoor.transform.position.x - currRoom.RightDoor.transform.position.x;
                 diffY = newRoomManager.LeftDoor.transform.position.y - currRoom.RightDoor.transform.position.y;
                 newRoom.transform.position = new Vector3(newRoom.transform.position.x - diffX, newRoom.transform.position.y - diffY, 0);
-                newRoomManager.LeftDoor.SetActive(false);
+                newRoomManager.LeftDoor.GetComponent<HideDoor>().SetActiveServerRpc(false);
                 newRoomManager.LeftRoom = currRoom;
                 break;
             // Bottom
@@ -307,7 +285,7 @@ public class MapLayoutManager : NetworkBehaviour
                 diffX = newRoomManager.TopDoor.transform.position.x - currRoom.BottomDoor.transform.position.x;
                 diffY = newRoomManager.TopDoor.transform.position.y - currRoom.BottomDoor.transform.position.y;
                 newRoom.transform.position = new Vector3(newRoom.transform.position.x - diffX, newRoom.transform.position.y - diffY, 0);
-                newRoomManager.TopDoor.SetActive(false);
+                newRoomManager.TopDoor.GetComponent<HideDoor>().SetActiveServerRpc(false);
                 newRoomManager.TopRoom = currRoom;
                 break;
             // Top
@@ -315,7 +293,7 @@ public class MapLayoutManager : NetworkBehaviour
                 diffX = newRoomManager.BottomDoor.transform.position.x - currRoom.TopDoor.transform.position.x;
                 diffY = newRoomManager.BottomDoor.transform.position.y - currRoom.TopDoor.transform.position.y;
                 newRoom.transform.position = new Vector3(newRoom.transform.position.x - diffX, newRoom.transform.position.y - diffY, 0);
-                newRoomManager.BottomDoor.SetActive(false);
+                newRoomManager.BottomDoor.GetComponent<HideDoor>().SetActiveServerRpc(false);
                 newRoomManager.BottomRoom = currRoom;
                 break;
         }
@@ -351,19 +329,19 @@ public class MapLayoutManager : NetworkBehaviour
         {
             // Left
             case (0):
-                currRoom.LeftDoor.GetComponent<HideDoor>().UnhideDoor();
+                currRoom.LeftDoor.GetComponent<HideDoor>().UnhideDoorServerRpc();
                 break;
             // Right
             case (1):
-                currRoom.RightDoor.GetComponent<HideDoor>().UnhideDoor();
+                currRoom.RightDoor.GetComponent<HideDoor>().UnhideDoorServerRpc();
                 break;
             // Bottom
             case (2):
-                currRoom.BottomDoor.GetComponent<HideDoor>().UnhideDoor();
+                currRoom.BottomDoor.GetComponent<HideDoor>().UnhideDoorServerRpc();
                 break;
             // Top
             case (3):
-                currRoom.TopDoor.GetComponent<HideDoor>().UnhideDoor();
+                currRoom.TopDoor.GetComponent<HideDoor>().UnhideDoorServerRpc();
                 break;
         }
     }
@@ -399,4 +377,6 @@ public class MapLayoutManager : NetworkBehaviour
 
         return test1 && test2 && test3 && test4;
     }
+
+
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MLAPI;
+using MLAPI.NetworkVariable;
+using MLAPI.Messaging;
 
 public class RoomManager : NetworkBehaviour // TODO: allenwhitedev not sure if this needs to be NetworkBehavior or can remain MonoBehavior on a GameObject with a NetworkObject component
 {
@@ -18,6 +20,7 @@ public class RoomManager : NetworkBehaviour // TODO: allenwhitedev not sure if t
     public GameObject enemies;
     public GameObject lights;
     public GameObject background;
+    private NetworkVariableBool AreDoorsInitialized = new NetworkVariableBool(false);
 
     SpriteRenderer m_Renderer;
     // Use this for initialization
@@ -28,7 +31,7 @@ public class RoomManager : NetworkBehaviour // TODO: allenwhitedev not sure if t
 
     private void Awake()
     {
-        InitializeDoors();
+        InitializeDoors(true, true);
     }
     void Update()
     {
@@ -44,7 +47,7 @@ public class RoomManager : NetworkBehaviour // TODO: allenwhitedev not sure if t
         }
     }
 
-    public void InitializeDoors()
+    public void InitializeDoors(bool val, bool nextVal)
     {
         LeftDoor.gameObject.SetActive(true);
         RightDoor.gameObject.SetActive(true);
@@ -55,4 +58,18 @@ public class RoomManager : NetworkBehaviour // TODO: allenwhitedev not sure if t
         BottomDoor.GetComponent<HideDoor>().MakeDoorHidden();
         TopDoor.GetComponent<HideDoor>().MakeDoorHidden();
     }
+
+    // - network variable sync
+    private void OnEnable() // start listening for door initialization
+    {
+        AreDoorsInitialized.OnValueChanged += InitializeDoors;
+    }
+    private void OnDisable() // stop listening for the door initialization
+    {
+        AreDoorsInitialized.OnValueChanged -= InitializeDoors;
+    }
+
+    // - network server RPCs
+    [ServerRpc] public void InitializeDoorsServerRpc() { InitializeDoors(true, true); }
+
 }

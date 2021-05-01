@@ -28,15 +28,9 @@ public class PlayerController : NetworkBehaviour
 
 	private AudioManager audioManager;
 
-	public MapLayoutManager mapLayoutManager;
-
     public override void NetworkStart()
     {
         base.NetworkStart();
-		mapLayoutManager = GameObject.FindObjectOfType<MapLayoutManager>();
-		// TODO: @allenwhitedev confirm #1 we must call client RPCs using ServerRPCs only from clients can we call client rpc directly here, better yet can
-		// TODO: @allenwhitdev confirm #2 we must call RPCs only from objects we control so client will basically only be able to call RPCs on server-owned objects from their client-owned Player prefab
-		mapLayoutManager.GenerateMapServerRpc(); 
     }
 
     private void Awake()
