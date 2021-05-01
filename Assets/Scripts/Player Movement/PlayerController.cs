@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cinemachine;
 using MLAPI;
 using MLAPI.Messaging;
 using MLAPI.NetworkVariable;
@@ -23,15 +24,26 @@ public class PlayerController : NetworkBehaviour
 
 	public Transform gunPosition;
 
+	[SerializeField] private GameObject cinemachineCam;
+
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
 
 	private AudioManager audioManager;
-
+	
     public override void NetworkStart()
     {
         base.NetworkStart();
+		SetupPlayerCamera();
     }
+
+	private void SetupPlayerCamera()
+	{
+		CinemachineVirtualCamera cam = cinemachineCam.GetComponent<CinemachineVirtualCamera>();
+		cam.Follow = transform;
+		cam.LookAt = transform;
+		if (!IsLocalPlayer) cam.gameObject.SetActive(false); // otherwise camera will follow each new player prefab spawned
+	}
 
     private void Awake()
 	{
