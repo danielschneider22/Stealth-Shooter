@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.mlapi.contrib.transport.photon-realtime": "https://github.com/Unity-Technologies/mlapi-community-contributions.git?path=/Transports/com.mlapi.contrib.transport.photon-realtime",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.cinemachine": "2.6.3",
